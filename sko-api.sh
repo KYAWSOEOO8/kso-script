@@ -104,14 +104,15 @@ def close_db(exc):
     db = g.pop("db", None)
     if db is not None: db.close()
 
-# ==== API ====
-@app.get("/api/health")
-def health(): return jsonify({"ok": True})
+# ==== API (Flask 1.x/2.x compatible) ====
+@app.route("/api/health", methods=["GET"])
+def health():
+    return jsonify({"ok": True})
 
-def is_admin(req): 
+def is_admin(req):
     return req.headers.get("X-Admin-Secret","") == ADMIN_SECRET
 
-@app.post("/api/generate")
+@app.route("/api/generate", methods=["POST"])
 def generate():
     if not is_admin(request):
         return jsonify({"ok":False, "error":"unauthorized"}), 401
@@ -127,7 +128,7 @@ def generate():
     db.commit()
     return jsonify({"ok": True, "key": key_id, "expires_at": exp.isoformat() if exp else None, "note": note})
 
-@app.post("/api/consume")
+@app.route("/api/consume", methods=["POST"])
 def consume():
     data = request.get_json(silent=True) or {}
     key_id = data.get("key")
@@ -270,14 +271,13 @@ def login():
     if request.method=="POST":
         u = request.form.get("username","")
         p = request.form.get("password","")
-        # ✅ Strictly check BOTH username & password against ENV
         if u == LOGIN_USER and p == LOGIN_PASS:
             session["auth"] = True
             return redirect(url_for("admin"))
         return render_template_string(LOGIN_HTML, error="Invalid credentials", logo=LOGO_URL)
     return render_template_string(LOGIN_HTML, error=None, logo=LOGO_URL)
 
-@app.route("/logout")
+@app.route("/logout", methods=["GET"])
 def logout():
     session.pop("auth", None)
     return redirect(url_for("login"))
@@ -287,7 +287,7 @@ def guard():
     if request.path.startswith("/admin") and session.get("auth") != True:
         return redirect(url_for("login"))
 
-@app.get("/admin")
+@app.route("/admin", methods=["GET"])
 def admin():
     return render_template_string(ADMIN_HTML, logo=LOGO_URL)
 
