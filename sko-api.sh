@@ -1,12 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # ZI One-Time Key API (Login + Modern UI) — single-file installer
 # Install:
 #   sudo bash api.sh --install --secret="changeme" --port=8088 [--user=NAME --pass=PASS]
 # Manage:
 #   sudo bash api.sh --status | --logs | --restart | --uninstall
-
-set -eu
-set -o pipefail 2>/dev/null || true
+set -euo pipefail
 
 # ===== Defaults =====
 SECRET="changeme"                       # X-Admin-Secret (for /api/generate)
@@ -42,7 +40,6 @@ done
 say(){ echo -e "$*"; }
 ok(){ say "\e[1;32m$*\e[0m"; }
 info(){ say "\e[1;36m$*\e[0m"; }
-warn(){ say "\e[1;33m$*\e[0m"; }
 
 ask_credentials() {
   if [ -n "${CLI_USER}" ] && [ -n "${CLI_PASS}" ]; then
@@ -51,27 +48,20 @@ ask_credentials() {
     say "Admin Username: $ADMIN_USER"
     return
   fi
-  if [ ! -t 0 ]; then
-    # non-interactive, no flags → safe defaults
-    ADMIN_USER="upkadmin"
-    ADMIN_PASS="$(tr -dc 'A-Za-z0-9' </dev/urandom | head -c 10 || echo upk123)"
-    warn "Non-interactive: using defaults ADMIN_USER=$ADMIN_USER  ADMIN_PASS=$ADMIN_PASS"
-    return
-  fi
-  say "\n\033[1;33m🔐 Admin သတ်မှတ်ပါ\033[0m"
+  say "\n\033[1;33m🔐 Admin Login သတ်မှတ်ပါ\033[0m"
   while :; do
     read -rp "Admin Username: " ADMIN_USER
     [ -n "${ADMIN_USER:-}" ] && break
   done
   while :; do
-    read -rsp "Admin Password: " ADMIN_PASS; echo
+    if [ -t 0 ]; then read -rsp "Admin Password: " ADMIN_PASS; echo; else read -rp "Admin Password (visible): " ADMIN_PASS; fi
     [ -n "${ADMIN_PASS:-}" ] && break
   done
 }
 
 install_pkgs() {
   apt-get update -y >/dev/null
-  apt-get install -y python3 python3-flask sqlite3 curl ca-certificates uuid-runtime >/dev/null
+  apt-get install -y python3 python3-flask sqlite3 curl ca-certificates >/dev/null
 }
 
 write_app_py() {
@@ -118,7 +108,7 @@ def close_db(exc):
 @app.get("/api/health")
 def health(): return jsonify({"ok": True})
 
-def is_admin(req):
+def is_admin(req): 
     return req.headers.get("X-Admin-Secret","") == ADMIN_SECRET
 
 @app.post("/api/generate")
@@ -169,8 +159,7 @@ LOGIN_HTML = """
 <style>
 :root{--bg:#0b1020;--card:rgba(255,255,255,.08);--bd:rgba(255,255,255,.15);--fg:#fff;--brand:#3b82f6;--brand2:#1e40af}
 @media (prefers-color-scheme: light){:root{--bg:#f6f7fb;--card:#fff;--bd:#e5e7eb;--fg:#0f172a}}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--fg)}
+*{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--fg)}
 body{display:grid;place-items:center;min-height:100vh;font-family:system-ui,Segoe UI,Roboto,"Noto Sans Myanmar",sans-serif}
 .card{width:min(92vw,380px);background:var(--card);border:1px solid var(--bd);border-radius:20px;padding:22px;box-shadow:0 12px 40px rgba(0,0,0,.35);text-align:center}
 .logo{width:110px;height:110px;border-radius:22px;object-fit:cover;display:block;margin:6px auto 12px;box-shadow:0 8px 26px rgba(0,0,0,.35)}
@@ -200,8 +189,7 @@ ADMIN_HTML = """
 <style>
 :root{--bg:#0b1020;--card:rgba(255,255,255,.06);--bd:rgba(255,255,255,.15);--fg:#e8eefc;--ring:rgba(91,140,255,.35);--brand:#5b8cff;--brand2:#3e64ff}
 @media (prefers-color-scheme: light){:root{--bg:#f7f8fb;--card:#fff;--bd:#e5e7eb;--fg:#0f172a;--ring:rgba(37,99,235,.25);--brand:#2563eb;--brand2:#1e40af}}
-*{box-sizing:border-box}
-html,body{margin:0;background:var(--bg);color:var(--fg)}
+*{box-sizing:border-box} html,body{margin:0;background:var(--bg);color:var(--fg)}
 body{min-height:100vh;display:grid;align-items:start;justify-items:center;font-family:system-ui,Segoe UI,Roboto,"Noto Sans Myanmar",sans-serif}
 .wrap{padding:14px;width:100%}
 .card{width:min(92vw,430px);background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:18px 16px;box-shadow:0 20px 60px rgba(0,0,0,.25);backdrop-filter:blur(10px);margin:12px auto}
@@ -282,6 +270,7 @@ def login():
     if request.method=="POST":
         u = request.form.get("username","")
         p = request.form.get("password","")
+        # ✅ Strictly check BOTH username & password against ENV
         if u == LOGIN_USER and p == LOGIN_PASS:
             session["auth"] = True
             return redirect(url_for("admin"))
@@ -349,10 +338,6 @@ start_service() {
   systemctl enable --now zi-keyapi.service
 }
 
-sanitize_crlf() {
-  sed -i 's/\r$//' "$APPDIR/app.py" "$UNIT" "$ENVF" 2>/dev/null || true
-}
-
 # ===== Actions =====
 case "$ACTION" in
   install)
@@ -362,7 +347,6 @@ case "$ACTION" in
     write_app_py
     write_env
     write_unit
-    sanitize_crlf
     if command -v ufw >/dev/null 2>&1; then ufw allow "${PORT}/tcp" >/dev/null 2>&1 || true; fi
     start_service
     sleep 1
