@@ -1,24 +1,30 @@
 #!/bin/bash
-# ZIVPN UDP Server + Web UI (Ultimate Edition)
-# Features: Calendar, Edit System, Disable/Enable Button, Monthly Menu
+# ZIVPN Full Panel (Username/Password Login)
+# Author: DEV-U PHOE KAUNT (Updated Edition)
 
 set -euo pipefail
 
-# ===== Pretty Colors =====
-B="\e[1;34m"; G="\e[1;32m"; Y="\e[1;33m"; R="\e[1;31m"; Z="\e[0m"
+# ===== Pretty Colors & UI =====
+B="\e[1;34m"; G="\e[1;32m"; Y="\e[1;33m"; R="\e[1;31m"; C="\e[1;36m"; Z="\e[0m"
 say(){ echo -e "$1"; }
 
-# ===== Root check =====
+clear
+echo -e "${B}────────────────────────────────────────────────────────${Z}"
+echo -e "${G}🌟 ZIVPN FULL PANEL (EDIT + CALENDAR + PAUSE SYSTEM) 🌟${Z}"
+echo -e "${C}          DEVELOPED BY: DEV-U PHOE KAUNT${Z}"
+echo -e "${B}────────────────────────────────────────────────────────${Z}"
+
+# ===== Root Check =====
 if [ "$(id -u)" -ne 0 ]; then
-  say "${R}ဤ script ကို root အဖြစ် run ရပါမယ် (sudo -i)${Z}"; exit 1
+  say "${R}❌ ဤ script ကို root အဖြစ် run ရပါမယ် (sudo -i)${Z}"; exit 1
 fi
 
-# ===== Packages =====
+# ===== Install Packages =====
 say "${Y}📦 လိုအပ်သော Packages များ တင်နေပါတယ်...${Z}"
-apt-get update -y >/dev/null
-apt-get install -y curl ufw jq python3 python3-flask iproute2 conntrack openssl >/dev/null
+apt-get update -y >/dev/null 2>&1
+apt-get install -y curl ufw jq python3 python3-flask iproute2 conntrack openssl >/dev/null 2>&1
 
-# ===== Paths & Files =====
+# ===== Paths & Folders =====
 mkdir -p /etc/zivpn
 BIN="/usr/local/bin/zivpn"
 CFG="/etc/zivpn/config.json"
@@ -26,40 +32,44 @@ USERS="/etc/zivpn/users.json"
 ENVF="/etc/zivpn/web.env"
 
 # ===== Download Binary =====
-say "${Y}⬇️ ZIVPN Core ကို ဒေါင်းလုဒ်ဆွဲနေပါတယ်...${Z}"
+say "${Y}⬇️ ZIVPN Binary ဒေါင်းလုဒ်ဆွဲနေပါတယ်...${Z}"
 curl -fsSL -o "$BIN" "https://github.com/zahidbd2/udp-zivpn/releases/download/udp-zivpn_1.4.9/udp-zivpn-linux-amd64"
 chmod +x "$BIN"
 
-# ===== SSL Certs =====
+# ===== SSL Certificates =====
 if [ ! -f /etc/zivpn/zivpn.crt ]; then
+  say "${Y}🔐 SSL Certificates များ ထုတ်ပေးနေပါတယ်...${Z}"
   openssl req -new -newkey rsa:2048 -days 365 -nodes -x509 \
     -subj "/C=MM/O=UPK/CN=zivpn" -keyout "/etc/zivpn/zivpn.key" -out "/etc/zivpn/zivpn.crt" >/dev/null 2>&1
 fi
 
-# ===== Default Files =====
+# ===== Default Data =====
 [ -f "$USERS" ] || echo "[]" > "$USERS"
 if [ ! -f "$CFG" ]; then
   echo '{"listen":":5667","auth":{"mode":"passwords","config":["zi"]},"cert":"/etc/zivpn/zivpn.crt","key":"/etc/zivpn/zivpn.key","obfs":"zivpn"}' > "$CFG"
 fi
 
-# ===== Web Admin Setup =====
-say "${G}🔐 Web UI အတွက် Login Password သတ်မှတ်ပါ${Z}"
-read -p "Username (Default: admin): " WEB_USER
+# ===== Admin Login Setup =====
+say "${G}🔐 Web Panel အတွက် Login အချက်အလက်များ သတ်မှတ်ပါ${Z}"
+read -p "အသုံးပြုမည့် နာမည် (Username): " WEB_USER
 WEB_USER=${WEB_USER:-admin}
-read -s -p "Password: " WEB_PASS; echo
+read -s -p "အသုံးပြုမည့် စကားဝှက် (Password): " WEB_PASS; echo
 WEB_SECRET=$(openssl rand -hex 16)
+
 echo "WEB_ADMIN_USER=$WEB_USER" > "$ENVF"
 echo "WEB_ADMIN_PASSWORD=$WEB_PASS" >> "$ENVF"
 echo "WEB_SECRET=$WEB_SECRET" >> "$ENVF"
+chmod 600 "$ENVF"
 
-# ===== Web UI (Python Code) =====
+# ===== Create Web UI (Python) =====
 cat >/etc/zivpn/web.py <<'PY'
-import os, json, subprocess, hmac
+import os, json, subprocess, hmac, re
 from flask import Flask, render_template_string, request, redirect, url_for, session
 from datetime import datetime, timedelta
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("WEB_SECRET", "upk-secret")
+app.secret_key = os.environ.get("WEB_SECRET", "upk-7788-secret")
+
 USERS_FILE = "/etc/zivpn/users.json"
 CONFIG_FILE = "/etc/zivpn/config.json"
 LOGO_URL = "https://raw.githubusercontent.com/Upk123/upkvip-ziscript/refs/heads/main/20251018_231111.png"
@@ -73,86 +83,84 @@ HTML_TEMPLATE = """
     <title>UPK ZIVPN Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --bg: #f4f7f6; --card: #ffffff; --primary: #007bff; --danger: #dc3545; --success: #28a745; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
-        .container { max-width: 900px; margin: auto; }
-        header { background: var(--card); padding: 20px; border-radius: 15px; display: flex; align-items: center; gap: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        .logo { height: 60px; border-radius: 10px; }
-        .box { background: var(--card); padding: 20px; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; transition: 0.3s; color: white; text-decoration: none; }
-        .btn-add { background: var(--success); width: 100%; }
-        .btn-edit { background: #ffc107; color: black; }
+        :root { --bg: #f0f2f5; --card: #ffffff; --primary: #1877f2; --danger: #f02849; --success: #42b72a; --warning: #f7b924; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 15px; }
+        .container { max-width: 950px; margin: auto; }
+        header { background: var(--card); padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .logo { height: 55px; border-radius: 10px; }
+        .box { background: var(--card); padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn { padding: 10px 18px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; color: white; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+        .btn-save { background: var(--primary); width: 100%; justify-content: center; }
+        .btn-edit { background: var(--warning); color: #000; }
         .btn-del { background: var(--danger); }
-        .btn-toggle { background: #6c757d; }
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: 15px; overflow: hidden; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #f8f9fa; }
+        .btn-toggle { background: #606770; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; }
+        th, td { padding: 14px; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; color: #666; font-size: 13px; }
         .status-on { color: var(--success); font-weight: bold; }
         .status-off { color: var(--danger); }
-        .disabled { opacity: 0.5; background: #fdfdfe; }
+        .row-disabled { opacity: 0.5; background: #f9f9f9; }
     </style>
 </head>
 <body>
     <div class="container">
         {% if not authed %}
-            <div class="box" style="max-width:400px; margin: 100px auto; text-align:center;">
-                <img src="{{logo}}" class="logo"><br>
-                <h3>Login Panel</h3>
+            <div class="box" style="max-width:380px; margin: 80px auto; text-align:center;">
+                <img src="{{logo}}" class="logo" style="height:80px;"><br>
+                <h2>Panel Login</h2>
                 <form method="POST" action="/login">
                     <input name="u" placeholder="Username" required>
                     <input name="p" type="password" placeholder="Password" required>
-                    <button class="btn btn-add" type="submit">Login</button>
+                    <button class="btn btn-save" type="submit">LOGIN</button>
                 </form>
             </div>
         {% else %}
             <header>
                 <img src="{{logo}}" class="logo">
                 <div style="flex-grow:1">
-                    <h2 style="margin:0">UPK ZIVPN Panel</h2>
-                    <small>Control Center</small>
+                    <h3 style="margin:0">UPK ZIVPN Panel</h3>
+                    <small style="color:var(--primary)">ZIVPN Multi-Management</small>
                 </div>
-                <a href="/logout" class="btn btn-del">Logout</a>
+                <a href="/logout" class="btn btn-del"><i class="fas fa-sign-out-alt"></i></a>
             </header>
 
             <div class="box">
-                <h3><i class="fas fa-user-plus"></i> User {{ 'ပြင်ဆင်ရန်' if edit_data else 'အသစ်ထည့်ရန်' }}</h3>
+                <h4><i class="fas fa-user-edit"></i> {{ 'Edit User' if edit_data else 'Add New User' }}</h4>
                 <form method="POST" action="/add">
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
                         <input name="user" placeholder="Username" value="{{edit_data.user if edit_data else ''}}" required>
                         <input name="password" placeholder="Password" value="{{edit_data.password if edit_data else ''}}" required>
-                        <select onchange="if(this.value!='') document.getElementById('exp').value=this.value">
-                            <option value="">-- သက်တမ်းရွေးရန် --</option>
-                            <option value="30">၁ လ (ရက် ၃၀)</option>
-                            <option value="60">၂ လ (ရက် ၆၀)</option>
-                            <option value="90">၃ လ (ရက် ၉၀)</option>
+                        <select onchange="if(this.value!='') document.getElementById('exp_date').value=this.value">
+                            <option value="">-- ရက်ရွေးရန် --</option>
+                            <option value="30">၁ လစာ (ရက် ၃၀)</option>
+                            <option value="60">၂ လစာ (ရက် ၆၀)</option>
+                            <option value="90">၃ လစာ (ရက် ၉၀)</option>
                         </select>
-                        <input type="date" name="expires" id="exp" value="{{edit_data.expires if edit_data else ''}}">
+                        <input type="date" name="expires" id="exp_date" value="{{edit_data.expires if edit_data else ''}}">
                     </div>
-                    <button class="btn btn-add" type="submit"><i class="fas fa-save"></i> Save & Sync</button>
+                    <button class="btn btn-save" type="submit"><i class="fas fa-save"></i> SAVE & SYNC</button>
                 </form>
             </div>
 
             <table>
                 <tr>
-                    <th>Username</th>
-                    <th>Password</th>
+                    <th>User/Pass</th>
                     <th>Expires</th>
                     <th>Status</th>
                     <th>Actions</th>
                 </tr>
                 {% for u in users %}
-                <tr class="{{ 'disabled' if u.disabled else '' }}">
-                    <td><b>{{u.user}}</b></td>
-                    <td><code>{{u.password}}</code></td>
-                    <td>{{u.expires}}</td>
+                <tr class="{{ 'row-disabled' if u.disabled else '' }}">
+                    <td><strong>{{u.user}}</strong><br><small>{{u.password}}</small></td>
+                    <td>{{u.expires if u.expires else 'Unlimited'}}</td>
                     <td>
                         {% if u.disabled %}<span style="color:gray">Paused</span>
                         {% elif u.status == 'Online' %}<span class="status-on">● Online</span>
                         {% else %}<span class="status-off">○ Offline</span>{% endif %}
                     </td>
                     <td>
-                        <div style="display:flex; gap:5px;">
+                        <div style="display:flex; gap:8px;">
                             <a href="/edit?user={{u.user}}" class="btn btn-edit"><i class="fas fa-edit"></i></a>
                             <a href="/toggle?user={{u.user}}" class="btn btn-toggle"><i class="fas {{ 'fa-eye' if u.disabled else 'fa-eye-slash' }}"></i></a>
                             <form method="POST" action="/delete" style="display:inline">
@@ -171,16 +179,19 @@ HTML_TEMPLATE = """
 """
 
 def read_json(path):
-    with open(path, "r") as f: return json.load(f)
+    try:
+        with open(path, "r") as f: return json.load(f)
+    except: return []
 
 def write_json(path, data):
-    with open(path, "w") as f: json.dump(data, f, indent=2)
+    with open(path, "w") as f: json.dump(data, f, indent=4)
 
-def sync():
+def sync_to_server():
     users = read_json(USERS_FILE)
-    passwords = [u['password'] for u in users if not u.get('disabled', False)]
-    cfg = read_json(CONFIG_FILE)
-    cfg['auth']['config'] = passwords
+    active_pws = [u['password'] for u in users if not u.get('disabled', False)]
+    with open(CONFIG_FILE, "r") as f:
+        cfg = json.load(f)
+    cfg['auth']['config'] = active_pws
     write_json(CONFIG_FILE, cfg)
     subprocess.run(["systemctl", "restart", "zivpn"])
 
@@ -222,7 +233,7 @@ def add():
     else:
         users.append({"user": user, "password": pw, "expires": exp, "disabled": False})
     write_json(USERS_FILE, users)
-    sync()
+    sync_to_server()
     return redirect(url_for("index"))
 
 @app.route("/toggle")
@@ -233,7 +244,7 @@ def toggle():
         if u['user'] == name:
             u['disabled'] = not u.get('disabled', False)
     write_json(USERS_FILE, users)
-    sync()
+    sync_to_server()
     return redirect(url_for("index"))
 
 @app.route("/delete", methods=["POST"])
@@ -241,7 +252,7 @@ def delete():
     name = request.form.get("user")
     users = [u for u in read_json(USERS_FILE) if u['user'] != name]
     write_json(USERS_FILE, users)
-    sync()
+    sync_to_server()
     return redirect(url_for("index"))
 
 if __name__ == "__main__":
@@ -249,6 +260,7 @@ if __name__ == "__main__":
 PY
 
 # ===== Systemd Services =====
+say "${Y}⚙️ System Services များ သတ်မှတ်နေပါတယ်...${Z}"
 cat >/etc/systemd/system/zivpn.service <<EOF
 [Unit]
 Description=ZIVPN UDP Server
@@ -277,20 +289,23 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-# ===== Networking =====
+# ===== Networking & Firewall =====
+say "${Y}🌐 Networking & Firewall ပြင်ဆင်နေပါတယ်...${Z}"
 sysctl -w net.ipv4.ip_forward=1 >/dev/null
 IFACE=$(ip -4 route ls | awk '/default/ {print $5; exit}')
 iptables -t nat -A PREROUTING -i "$IFACE" -p udp --dport 6000:19999 -j DNAT --to-destination :5667
 iptables -t nat -A POSTROUTING -o "$IFACE" -j MASQUERADE
-ufw allow 5667/udp >/dev/null
-ufw allow 6000:19999/udp >/dev/null
-ufw allow 8080/tcp >/dev/null
+ufw allow 5667/udp >/dev/null 2>&1
+ufw allow 6000:19999/udp >/dev/null 2>&1
+ufw allow 8080/tcp >/dev/null 2>&1
 
-# ===== Start =====
+# ===== Enable & Start =====
 systemctl daemon-reload
 systemctl enable --now zivpn zivpn-web
-IP=$(hostname -I | awk '{print $1}')
 
-say "\n$G✅ အားလုံး အောင်မြင်စွာ တပ်ဆင်ပြီးပါပြီ!$Z"
-say "$B🌐 Web Panel:$Z $Y http://$IP:8080 $Z"
-say "$B👤 User/Pass:$Z $Y $WEB_USER / $WEB_PASS $Z"
+IP=$(hostname -I | awk '{print $1}')
+say "\n${G}✅ အားလုံး အဆင်ပြေစွာ ပြီးဆုံးသွားပါပြီ!${Z}"
+say "${B}🌐 Web Panel Link :${Z} ${Y}http://$IP:8080${Z}"
+say "${B}👤 Admin Username :${Z} ${Y}$WEB_USER${Z}"
+say "${B}🔑 Admin Password :${Z} ${Y}$WEB_PASS${Z}"
+echo -e "${B}────────────────────────────────────────────────────────${Z}"
