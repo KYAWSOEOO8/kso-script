@@ -1,131 +1,115 @@
 #!/bin/bash
-# KSO ZIVPN UDP Server + Web UI (Premium UI Version)
-# Version: 3.5 (Renew + 30-Day + Beautiful UI)
+# KSO ZIVPN - Premium Image Save Version
+# Version: 4.5 (All Info in Screenshot)
 # Author: KSO (Kyaw Soe Oo)
 
 set -euo pipefail
 
-# ===== Paths =====
-mkdir -p /etc/zivpn
-BIN="/usr/local/bin/zivpn"
-CFG="/etc/zivpn/config.json"
-USERS="/etc/zivpn/users.json"
-ENVF="/etc/zivpn/web.env"
-
-# Root check
-[ "$(id -u)" -ne 0 ] && echo "Root အဖြစ် run ပေးပါ" && exit 1
-
-# Installation of Requirements
-apt-get update -y && apt-get install -y curl ufw jq python3 python3-flask openssl >/dev/null
-
-# ===== Web Panel (Python/Flask) Premium UI =====
+# ===== Web Panel (Python/Flask) =====
 cat >/etc/zivpn/web.py <<'PY'
 import os, json, subprocess, hmac, datetime
 from flask import Flask, render_template_string, request, redirect, url_for, session
 
 app = Flask(__name__)
-app.secret_key = os.environ.get("WEB_SECRET", "kso-billing-premium-sec")
+app.secret_key = os.environ.get("WEB_SECRET", "kso-screenshot-pro")
 
-USERS_FILE, CONFIG_FILE = "/etc/zivpn/users.json", "/etc/zivpn/config.json"
+USERS_FILE = "/etc/zivpn/users.json"
+CONFIG_FILE = "/etc/zivpn/config.json"
 
 HTML = """
 <!doctype html>
 <html lang="my">
 <head>
     <meta charset="utf-8">
-    <title>KSO ZIVPN PREMIUM</title>
+    <title>KSO ZIVPN PANEL</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        :root { --primary: #0084ff; --success: #28a745; --warning: #ffc107; --danger: #dc3545; --dark: #1c1e21; }
-        body{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f2f5; margin: 0; padding: 15px; color: #333; }
-        .card{ background: #fff; padding: 25px; border-radius: 20px; max-width: 800px; margin: 20px auto; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #e1e4e8; }
-        .header{ text-align: center; margin-bottom: 30px; }
-        .header img { width: 90px; height: 90px; border-radius: 50%; border: 4px solid var(--primary); padding: 5px; margin-bottom: 10px; }
-        h2 { margin: 10px 0; color: var(--dark); letter-spacing: 1px; }
+        :root { --main: #0084ff; --dark: #1a1a1a; --success: #28a745; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; margin: 0; padding: 10px; }
+        .card { background: #fff; border-radius: 20px; padding: 20px; max-width: 500px; margin: auto; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
         
-        .input-group { position: relative; margin-bottom: 15px; }
-        input { width: 100%; padding: 12px 15px; border: 2px solid #eee; border-radius: 12px; outline: none; transition: 0.3s; font-size: 15px; box-sizing: border-box; }
-        input:focus { border-color: var(--primary); }
+        /* Screenshot Area - ပုံထဲမှာပေါ်မယ့်အပိုင်း */
+        #capture-area { background: var(--dark); color: #fff; padding: 25px; border-radius: 15px; margin-bottom: 20px; border: 2px solid var(--main); }
+        .info-title { color: var(--main); font-weight: bold; margin-bottom: 15px; text-align: center; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        .info-row { display: flex; justify-content: space-between; margin: 10px 0; font-size: 15px; border-bottom: 1px dashed #444; padding-bottom: 5px; }
+        .info-value { color: #00ff00; font-weight: bold; }
         
-        .btn { padding: 12px 20px; color: #fff; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; transition: 0.3s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; }
-        .btn-add { background: var(--primary); width: 100%; margin-top: 10px; font-size: 16px; }
-        .btn-add:hover { background: #0073e6; transform: translateY(-2px); }
-        .btn-renew { background: var(--warning); color: #000; padding: 8px 15px; font-size: 13px; }
-        .btn-del { background: var(--danger); padding: 8px 15px; font-size: 13px; }
-        .btn:active { transform: scale(0.98); }
-
-        table { width: 100%; margin-top: 25px; border-collapse: separate; border-spacing: 0 10px; }
-        th { padding: 15px; text-align: left; color: #666; font-weight: 500; font-size: 14px; }
-        td { padding: 15px; background: #f8f9fa; border: none; font-size: 15px; }
-        td:first-child { border-radius: 12px 0 0 12px; font-weight: bold; }
-        td:last-child { border-radius: 0 12px 12px 0; }
+        .btn { border: none; padding: 12px; border-radius: 10px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.3s; margin-top: 10px; }
+        .btn-save { background: #6f42c1; color: #fff; }
+        .btn-add { background: var(--main); color: #fff; }
+        .btn-renew { background: #ffc107; color: #000; width: auto; padding: 8px 12px; }
+        .btn-del { background: #dc3545; color: #fff; width: auto; padding: 8px 12px; }
         
-        .badge { padding: 5px 10px; border-radius: 8px; font-size: 12px; font-weight: bold; }
-        .badge-date { background: #e7f3ff; color: var(--primary); }
-        code { background: #eee; padding: 4px 8px; border-radius: 6px; font-family: monospace; }
-        
-        .logout { display: block; text-align: center; margin-top: 25px; color: #999; text-decoration: none; font-size: 14px; }
-        .logout:hover { color: var(--danger); }
+        input { width: 100%; padding: 12px; margin: 5px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        table { width: 100%; margin-top: 15px; border-collapse: collapse; }
+        td { padding: 10px; border-bottom: 1px solid #eee; font-size: 14px; }
     </style>
 </head>
 <body>
 <div class="card">
-    <div class="header">
-        <img src="https://raw.githubusercontent.com/Upk123/upkvip-ziscript/refs/heads/main/20251018_231111.png" alt="Logo">
-        <h2>KSO ZIVPN PANEL</h2>
-        <p style="color: #888;">Modern User Management System</p>
+    <div align="center" style="margin-bottom:15px;">
+        <img src="https://raw.githubusercontent.com/Upk123/upkvip-ziscript/refs/heads/main/20251018_231111.png" width="70" style="border-radius:50%;">
+        <h2 style="margin:5px;">KSO ZIVPN</h2>
     </div>
 
     {% if not session.get('auth') %}
         <form method="POST" action="/login">
-            <div class="input-group"><input type="text" name="u" placeholder="Admin Username" required></div>
-            <div class="input-group"><input type="password" name="p" placeholder="Admin Password" required></div>
-            <button type="submit" class="btn btn-add"><i class="fas fa-sign-in-alt"></i> Login to Dashboard</button>
+            <input type="text" name="u" placeholder="Admin Name" required>
+            <input type="password" name="p" placeholder="Admin Pass" required>
+            <button type="submit" class="btn btn-add">LOGIN</button>
         </form>
     {% else %}
-        <form method="POST" action="/add" style="background: #f8f9fa; padding: 20px; border-radius: 15px;">
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                <div class="input-group"><input type="text" name="user" placeholder="User Name" required></div>
-                <div class="input-group"><input type="text" name="pass" placeholder="VPN Password" required></div>
-            </div>
-            <button type="submit" class="btn btn-add"><i class="fas fa-user-plus"></i> Create 30 Days Account</button>
+        <div id="capture-area">
+            <div class="info-title"><i class="fas fa-shield-alt"></i> VPN PREMIUM ACCOUNT</div>
+            <div class="info-row"><span>1. VSP IP:</span> <span class="info-value">{{vps_ip}}</span></div>
+            <div class="info-row"><span>2. Name:</span> <span class="info-value">{{sel_u or '---'}}</span></div>
+            <div class="info-row"><span>3. Password:</span> <span class="info-value">{{sel_p or '---'}}</span></div>
+            <div class="info-row"><span>Expiry:</span> <span style="color:yellow;">{{sel_e or '---'}}</span></div>
+        </div>
+
+        <button onclick="takeScreenshot()" class="btn btn-save"><i class="fas fa-download"></i> Save အပုံဒေါင်းရန်</button>
+
+        <form method="POST" action="/add" style="margin-top:15px;">
+            <input type="text" name="user" placeholder="နာမည် (Name)" required>
+            <input type="text" name="pass" placeholder="စကားဝှက် (Pass)" required>
+            <button type="submit" class="btn btn-add">+ Create Account</button>
         </form>
 
         <table>
-            <thead>
-                <tr>
-                    <th>NAME</th>
-                    <th>PASSWORD</th>
-                    <th>EXPIRY DATE</th>
-                    <th>ACTIONS</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for u in users %}
-                <tr>
-                    <td>{{u.user}}</td>
-                    <td><code>{{u.password}}</code></td>
-                    <td><span class="badge badge-date"><i class="far fa-calendar-alt"></i> {{u.expiry}}</span></td>
-                    <td>
-                        <div style="display:flex; gap: 8px;">
-                            <form method="POST" action="/renew">
-                                <input type="hidden" name="user" value="{{u.user}}">
-                                <button type="submit" class="btn btn-renew" title="Renew 30 Days"><i class="fas fa-sync-alt"></i></button>
-                            </form>
-                            <form method="POST" action="/del" onsubmit="return confirm('ဖျက်မှာ သေချာပါသလား?')">
-                                <input type="hidden" name="user" value="{{u.user}}">
-                                <button type="submit" class="btn btn-del" title="Delete User"><i class="fas fa-trash-alt"></i></button>
-                            </form>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
+            {% for u in users %}
+            <tr>
+                <td><b>{{u.user}}</b><br><small>{{u.expiry}}</small></td>
+                <td><code>{{u.password}}</code></td>
+                <td align="right">
+                    <form method="POST" action="/renew" style="display:inline;">
+                        <input type="hidden" name="user" value="{{u.user}}">
+                        <button type="submit" class="btn btn-renew"><i class="fas fa-sync"></i></button>
+                    </form>
+                    <form method="POST" action="/del" style="display:inline;">
+                        <input type="hidden" name="user" value="{{u.user}}">
+                        <button type="submit" class="btn btn-del"><i class="fas fa-trash"></i></button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
         </table>
-        <a href="/logout" class="logout"><i class="fas fa-power-off"></i> Logout Session</a>
+        <br><center><a href="/logout" style="color:#999;font-size:12px;">Logout Session</a></center>
     {% endif %}
 </div>
+
+<script>
+function takeScreenshot() {
+    const area = document.getElementById('capture-area');
+    html2canvas(area).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'KSO-VPN-Info.png';
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+    });
+}
+</script>
 </body></html>"""
 
 def get_expiry():
@@ -134,7 +118,12 @@ def get_expiry():
 @app.route('/')
 def index():
     users = json.load(open(USERS_FILE)) if os.path.exists(USERS_FILE) else []
-    return render_template_string(HTML, users=users)
+    try:
+        vps_ip = subprocess.check_output(["hostname", "-I"]).decode().split()[0]
+    except:
+        vps_ip = "138.68.243.84"
+    return render_template_string(HTML, users=users, vps_ip=vps_ip, 
+                                sel_u=session.get('u'), sel_p=session.get('p'), sel_e=session.get('e'))
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -142,34 +131,31 @@ def login():
         session['auth'] = True
     return redirect('/')
 
-@app.route('/logout')
-def logout(): session.pop('auth', None); return redirect('/')
-
-@app.route('/add', methods=['POST'])
-def add():
-    if not session.get('auth'): return redirect('/')
-    u, p = request.form.get('user'), request.form.get('pass')
-    users = json.load(open(USERS_FILE)) if os.path.exists(USERS_FILE) else []
-    users.append({"user":u, "password":p, "expiry": get_expiry()})
-    json.dump(users, open(USERS_FILE,'w'), indent=2)
-    sync_config(users)
-    return redirect('/')
-
 @app.route('/renew', methods=['POST'])
 def renew():
-    if not session.get('auth'): return redirect('/')
     name = request.form.get('user')
     users = json.load(open(USERS_FILE))
     for u in users:
         if u['user'] == name:
             u['expiry'] = get_expiry()
+            session['u'], session['p'], session['e'] = u['user'], u['password'], u['expiry']
             break
     json.dump(users, open(USERS_FILE,'w'), indent=2)
     return redirect('/')
 
+@app.route('/add', methods=['POST'])
+def add():
+    u, p = request.form.get('user'), request.form.get('pass')
+    users = json.load(open(USERS_FILE)) if os.path.exists(USERS_FILE) else []
+    exp = get_expiry()
+    users.append({"user":u, "password":p, "expiry": exp})
+    json.dump(users, open(USERS_FILE,'w'), indent=2)
+    session['u'], session['p'], session['e'] = u, p, exp
+    sync_config(users)
+    return redirect('/')
+
 @app.route('/del', methods=['POST'])
 def delete():
-    if not session.get('auth'): return redirect('/')
     name = request.form.get('user')
     users = [u for u in json.load(open(USERS_FILE)) if u['user'] != name]
     json.dump(users, open(USERS_FILE,'w'), indent=2)
@@ -183,10 +169,11 @@ def sync_config(users):
         json.dump(cfg, open(CONFIG_FILE,'w'), indent=2)
         subprocess.run(["systemctl", "restart", "zivpn"])
 
+@app.route('/logout')
+def logout(): session.clear(); return redirect('/')
+
 if __name__ == "__main__": app.run(host="0.0.0.0", port=8080)
 PY
 
-# Update Systemd and Permissions
+# Restart Service
 systemctl restart zivpn-web
-echo "Update အောင်မြင်ပါသည်။ UI အသစ်ကို Browser မှာ Refresh လုပ်ကြည့်ပါ။"
-
