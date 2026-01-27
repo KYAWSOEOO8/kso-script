@@ -1,26 +1,30 @@
 #!/bin/bash
-# KSO ZIVPN - Manual Admin Setup
-# Version: 6.0
+# KSO ZIVPN - Final Stable Version
+# All Bugs & Library Issues Fixed
 
 set -euo pipefail
 
-# ၁။ Folder ပြင်ဆင်ခြင်း
+# ၁။ လိုအပ်သော Library များ သွင်းခြင်း
+sudo apt update
+sudo apt install -y python3-flask python3-pip
+pip3 install flask-cors --break-system-packages || true
+
+# ၂။ Folder နှင့် Environment ပြင်ဆင်ခြင်း
 sudo mkdir -p /etc/zivpn
 sudo chmod 777 /etc/zivpn
 
-# ၂။ စိတ်ကြိုက် Admin Name/Pass တောင်းယူခြင်း
-echo -e "\e[1;33m--- Admin အကောင့်အသစ် သတ်မှတ်ရန် ---\e[0m"
-read -p "Admin Name ပေးပါ: " ADMIN_U
-read -p "Admin Password ပေးပါ: " ADMIN_P
-echo -e "\e[1;32mသိမ်းဆည်းပြီးပါပြီ!\e[0m"
+# ၃။ စိတ်ကြိုက် Admin Name/Pass တောင်းခြင်း
+echo -e "\e[1;33m--- Admin Setup ---\e[0m"
+read -p "Admin Name: " ADMIN_U
+read -p "Admin Password: " ADMIN_P
 
 echo "WEB_ADMIN_USER=$ADMIN_U" > /etc/zivpn/web.env
 echo "WEB_ADMIN_PASSWORD=$ADMIN_P" >> /etc/zivpn/web.env
 echo "WEB_SECRET=$(openssl rand -hex 16)" >> /etc/zivpn/web.env
 
-# ၃။ Web UI Script (web.py)
+# ၄။ Web UI Script (web.py)
 cat >/etc/zivpn/web.py <<'PY'
-import os, json, subprocess, hmac, datetime
+import os, json, subprocess, datetime
 from flask import Flask, render_template_string, request, redirect, session
 
 app = Flask(__name__)
@@ -29,33 +33,33 @@ USERS_FILE = "/etc/zivpn/users.json"
 
 HTML = """
 <!doctype html>
-<html lang="my">
+<html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body { font-family: sans-serif; background: #f0f2f5; padding: 10px; }
-        .card { background: #fff; border-radius: 15px; padding: 25px; max-width: 450px; margin: auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; margin-bottom: 10px; }
-        .btn { width: 100%; padding: 12px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; color: #fff; background: #0084ff; }
-        #capture { background: #1a1a1a; color: #fff; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 2px solid #0084ff; }
-        .row { display: flex; justify-content: space-between; margin: 10px 0; border-bottom: 1px dashed #444; padding-bottom: 5px; font-size: 14px; }
+        body { font-family: sans-serif; background: #f0f2f5; padding: 15px; text-align: center; }
+        .card { background: #fff; border-radius: 15px; padding: 25px; max-width: 400px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        #capture { background: #121212; color: #fff; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 2px solid #0084ff; }
+        .row { display: flex; justify-content: space-between; margin: 8px 0; border-bottom: 1px dashed #333; padding-bottom: 5px; font-size: 14px; }
         .val { color: #00ff00; font-weight: bold; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold; color: #fff; background: #0084ff; }
     </style>
 </head>
 <body>
 <div class="card">
-    <h2 align="center">KSO ZIVPN PANEL</h2>
+    <h2>KSO ZIVPN PANEL</h2>
     {% if not session.get('auth') %}
         <form method="POST" action="/login">
-            <input type="text" name="u" placeholder="Admin Username" required>
-            <input type="password" name="p" placeholder="Admin Password" required>
-            <button type="submit" class="btn">LOGIN</button>
+            <input type="text" name="u" placeholder="Username" required>
+            <input type="password" name="p" placeholder="Password" required>
+            <button class="btn">LOGIN</button>
         </form>
     {% else %}
         <div id="capture">
-            <div align="center" style="color:#0084ff; font-weight:bold; margin-bottom:10px;">🛡️ ACCOUNT INFO</div>
+            <div style="color:#0084ff; font-weight:bold; margin-bottom:10px;">🛡️ VPN INFO</div>
             <div class="row"><span>1. VPS IP:</span> <span class="val">{{vps_ip}}</span></div>
             <div class="row"><span>2. Name:</span> <span class="val">{{u or '---'}}</span></div>
             <div class="row"><span>3. Password:</span> <span class="val">{{p or '---'}}</span></div>
@@ -63,15 +67,14 @@ HTML = """
         </div>
         <button onclick="save()" class="btn" style="background:#6f42c1;">📸 Save အပုံဒေါင်းရန်</button>
         <form method="POST" action="/add" style="margin-top:20px;">
-            <input name="user" placeholder="နာမည်" required>
-            <input name="pass" placeholder="စကားဝှက်" required>
-            <button class="btn">အကောင့်သစ်ဖွင့်မည်</button>
+            <input name="user" placeholder="Name" required>
+            <input name="pass" placeholder="Pass" required>
+            <button class="btn">Add User</button>
         </form>
-        <br><center><a href="/logout" style="color:#999; font-size:12px;">Logout</a></center>
     {% endif %}
 </div>
 <script>
-function save() { html2canvas(document.getElementById('capture')).then(c => { let l=document.createElement('a'); l.download='VPN-Info.png'; l.href=c.toDataURL(); l.click(); }); }
+function save() { html2canvas(document.querySelector("#capture")).then(c => { let l=document.createElement('a'); l.download='VPN.png'; l.href=c.toDataURL(); l.click(); }); }
 </script>
 </body></html>"""
 
@@ -97,13 +100,10 @@ def add():
     session['u'], session['p'], session['e'] = u, p, e
     return redirect('/')
 
-@app.route('/logout')
-def logout(): session.clear(); return redirect('/')
-
 if __name__ == "__main__": app.run(host="0.0.0.0", port=8080)
 PY
 
-# ၄။ Service Start
+# ၅။ Service ပြန်တင်ခြင်း
 echo '[]' > /etc/zivpn/users.json
 cat >/etc/systemd/system/zivpn-web.service <<EOF
 [Unit]
@@ -118,7 +118,7 @@ EOF
 
 systemctl daemon-reload
 systemctl enable --now zivpn-web
+sudo ufw allow 8080/tcp
 
-IP=$(hostname -I | awk '{print $1}')
-echo -e "\n✅ တပ်ဆင်မှု ပြီးဆုံးပါပြီ။"
-echo -e "🌐 Browser Link: http://$IP:8080"
+echo -e "\n✅ တပ်ဆင်မှု အောင်မြင်ပါသည်။"
+echo -e "🌐 Browser Link: http://$(hostname -I | awk '{print $1}'):8080"
