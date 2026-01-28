@@ -253,48 +253,51 @@ HTML = """<!doctype html>
   </div>
   <div>
     <h1>KSO VIP</h1>
-    <p class="sub">KSO-ZIVPN-User Panel</p>
   </div>
   <div style="width: 100%; max-width: 280px;">
     <a class="btn" href="https://m.me/kyawsoe.oo.1292019" target="_blank" rel="noopener" 
        style="display: block; background: #0084ff; color: white; border: none; padding: 12px; font-weight: bold; text-decoration: none; border-radius: 8px;">
       💬 Contact (Messenger)
     </a>
+   <a class="btn" href="/logout">Logout</a>
   </div>
 </header>
 
-<div style="display: flex; justify-content: center; align-items: center; width: 100%; padding: 20px; background: #e0e5ec; min-height: 100vh; box-sizing: border-box;">
-  <form method="post" action="/add" style="width: 100%; max-width: 550px; padding: 40px; border-radius: 40px; background: #e0e5ec; box-shadow: 20px 20px 60px #bec3c9, -20px -20px 60px #ffffff; border: none;">
+<div style="display: flex; justify-content: center; align-items: center; width: 100%; padding: 15px; background: #e0e5ec; min-height: 100vh; box-sizing: border-box; font-family: sans-serif;">
+  <form method="post" action="/add" style="width: 100%; max-width: 400px; padding: 25px; border-radius: 30px; background: #e0e5ec; box-shadow: 15px 15px 30px #bec3c9, -15px -15px 30px #ffffff; border: none;">
     
-    <h3 style="text-align: center; color: #444; font-weight: 800; margin-bottom: 30px; letter-spacing: 1px;">➕ ADD NEW USER</h3>
+    <h3 style="text-align: center; color: #444; font-weight: 700; margin-bottom: 25px; letter-spacing: 0.5px; font-size: 1.2em;">➕ ADD NEW USER</h3>
 
-    {% if msg %}<div style="color: #0a8a0a; text-align: center; margin-bottom: 15px; font-weight: 600;">{{msg}}</div>{% endif %}
-    {% if err %}<div style="color: #c0392b; text-align: center; margin-bottom: 15px; font-weight: 600;">{{err}}</div>{% endif %}
+    {% if msg %}<div style="color: #0a8a0a; text-align: center; margin-bottom: 15px; font-weight: 600; font-size: 0.9em;">{{msg}}</div>{% endif %}
+    {% if err %}<div style="color: #c0392b; text-align: center; margin-bottom: 15px; font-weight: 600; font-size: 0.9em;">{{err}}</div>{% endif %}
 
-    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
-      <div style="flex: 1; min-width: 200px;">
-        <label style="display: block; margin-left: 10px; margin-bottom: 8px; color: #666; font-weight: 600; font-size: 0.9em;">👤 Username</label>
-        <input name="user" required style="width: 100%; padding: 12px 15px; border: none; border-radius: 15px; background: #e0e5ec; box-shadow: inset 6px 6px 12px #bec3c9, inset -6px -6px 12px #ffffff; outline: none; color: #444;">
+    <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
+      
+      <div>
+        <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 600; font-size: 0.85em;">👤 Username</label>
+        <input name="user" required style="width: 100%; padding: 10px 15px; border: none; border-radius: 12px; background: #e0e5ec; box-shadow: inset 4px 4px 8px #bec3c9, inset -4px -4px 8px #ffffff; outline: none; color: #444; box-sizing: border-box;">
       </div>
-      <div style="flex: 1; min-width: 200px;">
-        <label style="display: block; margin-left: 10px; margin-bottom: 8px; color: #666; font-weight: 600; font-size: 0.9em;">🔑 Password</label>
-        <input name="password" required style="width: 100%; padding: 12px 15px; border: none; border-radius: 15px; background: #e0e5ec; box-shadow: inset 6px 6px 12px #bec3c9, inset -6px -6px 12px #ffffff; outline: none; color: #444;">
-      </div>
-    </div>
 
-    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px;">
-      <div style="flex: 1; min-width: 200px;">
-        <label style="display: block; margin-left: 10px; margin-bottom: 8px; color: #666; font-weight: 600; font-size: 0.9em;">⏰ Expires</label>
-        <input name="expires" placeholder="2025-12-31" style="width: 100%; padding: 12px 15px; border: none; border-radius: 15px; background: #e0e5ec; box-shadow: inset 6px 6px 12px #bec3c9, inset -6px -6px 12px #ffffff; outline: none; color: #444;">
+      <div>
+        <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 600; font-size: 0.85em;">🔑 Password</label>
+        <input name="password" required style="width: 100%; padding: 10px 15px; border: none; border-radius: 12px; background: #e0e5ec; box-shadow: inset 4px 4px 8px #bec3c9, inset -4px -4px 8px #ffffff; outline: none; color: #444; box-sizing: border-box;">
       </div>
-      <div style="flex: 1; min-width: 200px;">
-        <label style="display: block; margin-left: 10px; margin-bottom: 8px; color: #666; font-weight: 600; font-size: 0.9em;">🔌 UDP Port</label>
-        <input name="port" placeholder="auto" style="width: 100%; padding: 12px 15px; border: none; border-radius: 15px; background: #e0e5ec; box-shadow: inset 6px 6px 12px #bec3c9, inset -6px -6px 12px #ffffff; outline: none; color: #444;">
+
+      <div style="display: flex; gap: 15px;">
+        <div style="flex: 1;">
+          <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 600; font-size: 0.85em;">⏰ Expires</label>
+          <input name="expires" placeholder="2025-12-31" style="width: 100%; padding: 10px 15px; border: none; border-radius: 12px; background: #e0e5ec; box-shadow: inset 4px 4px 8px #bec3c9, inset -4px -4px 8px #ffffff; outline: none; color: #444; box-sizing: border-box;">
+        </div>
+        <div style="flex: 1;">
+          <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 600; font-size: 0.85em;">🔌 UDP Port</label>
+          <input name="port" placeholder="auto" style="width: 100%; padding: 10px 15px; border: none; border-radius: 12px; background: #e0e5ec; box-shadow: inset 4px 4px 8px #bec3c9, inset -4px -4px 8px #ffffff; outline: none; color: #444; box-sizing: border-box;">
+        </div>
       </div>
+
     </div>
 
     <div style="text-align: center;">
-      <button type="submit" style="width: 100%; max-width: 250px; padding: 15px; border: none; border-radius: 20px; background: #e0e5ec; color: #0a8a0a; font-weight: 800; font-size: 1.1em; cursor: pointer; box-shadow: 6px 6px 12px #bec3c9, -6px -6px 12px #ffffff; transition: all 0.2s ease-in-out;">
+      <button type="submit" style="width: 100%; padding: 12px; border: none; border-radius: 15px; background: #e0e5ec; color: #0a8a0a; font-weight: 700; font-size: 1em; cursor: pointer; box-shadow: 5px 5px 10px #bec3c9, -5px -5px 10px #ffffff; transition: all 0.2s ease;">
         SAVE + SYNC
       </button>
     </div>
