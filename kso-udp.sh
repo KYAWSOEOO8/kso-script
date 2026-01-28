@@ -193,38 +193,25 @@ HTML = """<!doctype html>
  *{box-sizing: border-box; font-family: 'Segoe UI', sans-serif; transition: all 0.2s ease;}
  body{ background:var(--bg); color:var(--fg); margin:0; padding:15px; display:flex; flex-direction:column; align-items:center; min-height:100vh; }
  
- /* Header Section */
+ /* Header & Navigation */
  header{ width:100%; max-width:400px; text-align:center; margin-bottom:15px; }
  .brand img{ width:70px; height:70px; border-radius:22px; border:3px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom:10px; }
  .brand h1{ font-size:1.5em; margin:0; font-weight:900; color:var(--primary); text-transform:uppercase; letter-spacing:1px; }
-
- /* Login UI */
- .login-card{ margin-top:50px; background:#fff; padding:35px; border-radius:30px; width:100%; max-width:360px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.1); border: 1px solid var(--bd); }
- .login-card h2{ margin:0 0 25px; font-weight:900; color:var(--fg); font-size: 1.3em; }
-
- /* Shared Form Elements */
- .input-grp{ position:relative; margin-bottom: 15px; text-align: left; }
- .input-grp i{ position:absolute; left:12px; top:38px; color:var(--primary); font-size:14px; }
- label{ display:block; font-size:11px; color:var(--muted); margin-bottom:5px; font-weight:800; text-transform:uppercase; padding-left: 5px; }
- input{ width:100%; padding:12px 12px 12px 38px; border:2px solid var(--bd); border-radius:12px; font-size:14px; background:#f8fafc; width: 100%; }
- input:focus{ border-color:var(--primary); background:#fff; outline:none; box-shadow: 0 0 0 4px var(--primary-light); }
-
- .btn-primary{ background:var(--primary); color:#fff; border:none; width:100%; padding:15px; border-radius:15px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; font-size:14px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
-
- /* Dashboard Items */
- .nav-links{ display:flex; gap:12px; justify-content:center; margin: 10px 0 20px; }
+ .nav-links{ display:flex; gap:12px; justify-content:center; margin-bottom: 20px; }
  .nav-links a{ text-decoration:none; font-size:11px; font-weight:700; padding:10px 18px; border-radius:12px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color: var(--fg); border: 1px solid var(--bd); }
 
+ /* Login Screen */
+ .login-card{ margin-top:50px; background:#fff; padding:35px; border-radius:30px; width:100%; max-width:360px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.1); }
+
+ /* Forms */
  form.box{ background:var(--card); border-radius:25px; padding:22px; width:100%; max-width:400px; margin-bottom:20px; box-shadow:0 10px 25px rgba(0,0,0,0.05); }
- .row{ display:grid; grid-template-columns: 1fr 1fr; gap:15px; }
+ .input-grp{ position:relative; margin-bottom: 15px; text-align: left; }
+ .input-grp i{ position:absolute; left:12px; top:38px; color:var(--primary); font-size:14px; }
+ label{ display:block; font-size:11px; color:var(--muted); margin-bottom:5px; font-weight:800; text-transform:uppercase; }
+ input{ width:100%; padding:12px 12px 12px 38px; border:2px solid var(--bd); border-radius:12px; font-size:14px; background:#f8fafc; }
+ .btn-primary{ background:var(--primary); color:#fff; border:none; width:100%; padding:15px; border-radius:15px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; }
 
- /* Receipt Design */
- #receipt{ position: fixed; left: -9999px; width: 350px; background: #fff; padding: 35px; border-radius: 25px; text-align: center; }
- .r-title{ color: var(--primary); font-size: 28px; font-weight: 900; border-bottom: 3px dashed var(--bd); padding-bottom: 15px; margin-bottom: 20px; }
- .r-row{ display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; font-weight: 600; color: #334155; }
- .r-foot{ margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; color: var(--ok); font-weight: 800; font-size: 16px; }
-
- /* User Table */
+ /* Indicator Table */
  .table-container{ width:100%; max-width:400px; }
  table{ width:100%; border-collapse:separate; border-spacing: 0 10px; }
  td{ background:var(--card); padding:15px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); position:relative; overflow:hidden; }
@@ -234,34 +221,28 @@ HTML = """<!doctype html>
  .status-bar{ position:absolute; left:0; top:0; bottom:0; width:6px; }
  .bar-green{ background: var(--ok); } .bar-yellow{ background: var(--warn); } .bar-red{ background: var(--bad); }
 
+ /* Receipt Design */
+ #receipt{ position: fixed; left: -9999px; width: 350px; background: #fff; padding: 35px; border-radius: 25px; text-align: center; }
+ .r-title{ color: var(--primary); font-size: 28px; font-weight: 900; border-bottom: 3px dashed var(--bd); padding-bottom: 15px; margin-bottom: 20px; }
+ .r-row{ display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; font-weight: 600; color: #334155; }
+ .r-foot{ margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; color: var(--ok); font-weight: 800; }
+
  .action-group{ display:flex; gap:10px; justify-content:center; }
- .act-btn{ width:42px; height:42px; border-radius:12px; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; font-size: 18px; }
- .btn-cal{ background:#dbeafe; color:var(--primary); } 
- .btn-del{ background:#fee2e2; color:var(--bad); }
- .input-cal{ position:absolute; opacity:0; width:100%; height:100%; cursor:pointer; }
+ .act-btn{ width:42px; height:42px; border-radius:12px; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; }
+ .btn-cal{ background:#dbeafe; color:var(--primary); } .btn-del{ background:#fee2e2; color:var(--bad); }
+ .input-cal{ position:absolute; opacity:0; width:100%; height:100%; cursor:pointer; top:0; left:0; }
 </style></head><body>
 
 {% if not authed %}
   <div class="login-card">
-    <img src="{{ logo }}" style="width:85px; height:85px; border-radius:22px; margin-bottom:15px; border: 3px solid var(--primary-light);">
-    <h2>ADMIN ACCESS</h2>
+    <img src="{{ logo }}" style="width:85px; height:85px; border-radius:22px; margin-bottom:15px;">
+    <h2 style="margin-bottom:25px;">KSO ADMIN LOGIN</h2>
     <form method="post" action="/login">
-        <div class="input-grp">
-            <label>Username</label>
-            <i class="fa-solid fa-circle-user"></i>
-            <input name="u" placeholder="Admin Name" required autofocus>
-        </div>
-        <div class="input-grp">
-            <label>Password</label>
-            <i class="fa-solid fa-shield-halved"></i>
-            <input name="p" type="password" placeholder="••••••••" required>
-        </div>
-        <button class="btn-primary" style="margin-top:20px;">
-            SIGN IN <i class="fa-solid fa-arrow-right-to-bracket"></i>
-        </button>
+        <div class="input-grp"><label>Username</label><i class="fa-solid fa-user-shield"></i><input name="u" required autofocus></div>
+        <div class="input-grp"><label>Password</label><i class="fa-solid fa-lock"></i><input name="p" type="password" required></div>
+        <button class="btn-primary">အကောင့်ဝင်ရန် <i class="fa-solid fa-right-to-bracket"></i></button>
     </form>
   </div>
-
 {% else %}
   <header>
     <div class="brand"><img src="{{ logo }}"><h1>KSO VIP PANEL</h1></div>
@@ -272,17 +253,15 @@ HTML = """<!doctype html>
   </header>
 
   <form method="post" action="/add" id="userForm" class="box">
-    <div class="row">
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
       <div class="input-grp"><label>နာမည်</label><i class="fa-solid fa-user-plus"></i><input id="inUser" name="user" required></div>
       <div class="input-grp"><label>စကားဝှက်</label><i class="fa-solid fa-key"></i><input id="inPass" name="password" required></div>
     </div>
-    <div class="row">
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;">
       <div class="input-grp"><label>ရက်ပေါင်း</label><i class="fa-solid fa-calendar-day"></i><input id="inDays" name="expires" placeholder="30"></div>
       <div class="input-grp"><label>UDP PORT</label><i class="fa-solid fa-bolt"></i><input name="port" placeholder="Auto"></div>
     </div>
-    <button type="button" onclick="handleSave()" class="btn-primary">
-        SAVE & SYNC DATA <i class="fa-solid fa-file-invoice"></i>
-    </button>
+    <button type="button" onclick="handleSave()" class="btn-primary">SAVE & SYNC DATA <i class="fa-solid fa-file-invoice"></i></button>
   </form>
 
   <div id="receipt">
@@ -299,9 +278,9 @@ HTML = """<!doctype html>
         {% for u in users %}
         <tr>
           <td>
-            {% set d = u.days_left | int %}
+            {% set d = u.days_left | default(0) | int %}
             <div class="status-bar {% if d > 10 %}bar-green{% elif d > 3 %}bar-yellow{% else %}bar-red{% endif %}"></div>
-            <strong style="font-size:15px;">{{u.user}}</strong><br>
+            <strong>{{u.user}}</strong><br>
             <small style="color:var(--muted); font-weight:600;"><i class="fa-solid fa-clock"></i> {{u.expires}} ({{d}}d left)</small>
           </td>
           <td>
@@ -310,8 +289,8 @@ HTML = """<!doctype html>
                   <input type="hidden" name="user" value="{{u.user}}"><input type="hidden" name="mode" value="set">
                   <div class="act-btn btn-cal"><i class="fa-solid fa-calendar-check"></i><input type="date" name="expires" class="input-cal" onchange="this.form.submit()"></div>
               </form>
-              <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာ သေချာပါသလား?')" style="margin:0;"><input type="hidden" name="user" value="{{u.user}}">
-                  <button type="submit" class="act-btn btn-del"><i class="fa-solid fa-trash-can"></i></button>
+              <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာသေချာလား?')" style="margin:0;">
+                  <input type="hidden" name="user" value="{{u.user}}"><button type="submit" class="act-btn btn-del"><i class="fa-solid fa-trash-can"></i></button>
               </form>
             </div>
           </td>
@@ -326,7 +305,7 @@ HTML = """<!doctype html>
       const user = document.getElementById('inUser').value;
       const pass = document.getElementById('inPass').value;
       const days = document.getElementById('inDays').value || "30";
-      if(!user || !pass) { alert("အချက်အလက်ပြည့်စုံစွာဖြည့်ပါ"); return; }
+      if(!user || !pass) { alert("အချက်အလက်ဖြည့်ပါ"); return; }
 
       document.getElementById('rUser').innerText = user;
       document.getElementById('rPass').innerText = pass;
@@ -338,12 +317,13 @@ HTML = """<!doctype html>
           link.download = 'KSO_VIP_' + user + '.png';
           link.href = canvas.toDataURL("image/png");
           link.click();
-          document.getElementById('userForm').submit();
+          setTimeout(() => { document.getElementById('userForm').submit(); }, 500);
       });
   }
   </script>
 {% endif %}
 </body></html>"""
+
 app = Flask(__name__)
 
 # Secret & Admin credentials (via env)
