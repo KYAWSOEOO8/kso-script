@@ -1215,7 +1215,7 @@ def favicon(): return ("",204)
 def handle_405(e): return redirect(url_for('index'))
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=8080)
+  app.run(host="0.0.0.0", port=8880)
 PY
 
 # ===== Web systemd =====
@@ -1253,7 +1253,7 @@ iptables -t nat -A POSTROUTING -o "$IFACE" -j MASQUERADE
 
 ufw allow 5667/udp >/dev/null 2>&1 || true
 ufw allow 6000:19999/udp >/dev/null 2>&1 || true
-ufw allow 8080/tcp >/dev/null 2>&1 || true
+ufw allow 8880/tcp >/dev/null 2>&1 || true
 ufw reload >/dev/null 2>&1 || true
 
 # ===== CRLF sanitize =====
