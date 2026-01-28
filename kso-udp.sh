@@ -15,7 +15,7 @@ B="\e[1;34m"; G="\e[1;32m"; Y="\e[1;33m"; R="\e[1;31m"; C="\e[1;36m"; M="\e[1;35
 LINE="${B}────────────────────────────────────────────────────────${Z}"
 say(){ echo -e "$1"; }
 
-echo -e "\n$LINE\n${G}🌟 ZIVPN UDP Server + Web UI ကို U PHOE KAUNT မှ ရေးသားထားသည်${Z}\n$LINE"
+echo -e "\n$LINE\n${G}🌟 ZIVPN UDP Server + Web UI ကို  KSO မှ ရေးသားထားသည်${Z}\n$LINE"
 
 # ===== Root check =====
 if [ "$(id -u)" -ne 0 ]; then
@@ -179,7 +179,7 @@ CONFIG_FILE = "/etc/zivpn/config.json"
 LISTEN_FALLBACK = "5667"
 RECENT_SECONDS = 120
 
-LOGO_URL = "https://raw.githubusercontent.com/Upk123/upkvip-ziscript/refs/heads/main/20251018_231111.png"
+LOGO_URL = "https://raw.githubusercontent.com/KYAWSOEOO8/kso-script/blob/main/icon.png"
 
 HTML = """<!doctype html>
 <html lang="my"><head><meta charset="utf-8">
@@ -226,8 +226,9 @@ HTML = """<!doctype html>
 
 {% if not authed %}
   <div class="login-card">
-    <div class="center"><img class="logo" src="{{ logo }}" alt="DEV-U PHOE KAUNT"></div>
-    <h3 class="center">DEV-U PHOE KAUNT</h3>
+    <div class="center"><img class="logo" src="{{ logo }}" alt="KSO
+    -VIP"></div>
+    <h3 class="center">KSO-VIP</h3>
     <p class="center muted" style="margin-top:0">ZIVPN User Panel — Login</p>
     {% if err %}<div class="err">{{err}}</div>{% endif %}
     <form method="post" action="/login">
@@ -687,7 +688,7 @@ CONFIG_FILE = "/etc/zivpn/config.json"
 LISTEN_FALLBACK = "5667"
 RECENT_SECONDS = 120
 
-LOGO_URL = "https://raw.githubusercontent.com/Upk123/upkvip-ziscript/refs/heads/main/20251018_231111.png"
+LOGO_URL = "https://raw.githubusercontent.com/KYAWSOEOO8/kso-script/blob/main/icon.png"
 
 HTML = """<!doctype html>
 <html lang="my"><head><meta charset="utf-8">
@@ -749,14 +750,14 @@ HTML = """<!doctype html>
 {% else %}
 
 <header>
-  <img src="{{ logo }}" alt="DEV-U PHOE KAUNT"
+  <img src="{{ logo }}" alt="KSO-VIP"
        style="height:56px;width:auto;display:block;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.15)">
   <div style="flex:1 1 auto">
-    <h1>DEV-U PHOE KAUNT</h1>
+    <h1>KSO-VIP</h1>
     <div class="sub">ZIVPN User Panel</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center">
-    <a class="btn" href="https://m.me/upkvpnfastvpn" target="_blank" rel="noopener">💬 Contact (Messenger)</a>
+    <a class="btn" href="https://m.me/kyawsoe.oo.1292019" target="_blank" rel="noopener">💬 Contact (Messenger)</a>
     <a class="btn" href="/logout">Logout</a>
   </div>
 </header>
