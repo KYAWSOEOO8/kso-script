@@ -778,31 +778,45 @@ HTML = """<!doctype html>
 </form>
 
 <table>
-  <tr>
-    <th>👤 User</th><th>🔑 Password</th><th>⏰ Expires</th>
-    <th>🔌 Port</th><th>🔎 Status</th><th>🗑️ Delete</th>
-  </tr>
-  {% for u in users %}
-  <tr class="{% if u.expires and u.expires < today %}expired{% endif %}">
-    <td class="usercell">{{u.user}}</td>
-    <td>{{u.password}}</td>
-    <td>{% if u.expires %}{{u.expires}}{% else %}<span class="muted">—</span>{% endif %}</td>
-    <td>{% if u.port %}{{u.port}}{% else %}<span class="muted">—</span>{% endif %}</td>
-    <td>
-      {% if u.status == "Online" %}<span class="pill ok">Online</span>
-      {% elif u.status == "Offline" %}<span class="pill bad">Offline</span>
-      {% else %}<span class="pill unk">Unknown</span>
-      {% endif %}
-    </td>
-    <td>
-      <form class="delform" method="post" action="/delete" onsubmit="return confirm('ဖျက်မလား?')">
-        <input type="hidden" name="user" value="{{u.user}}">
-        <button type="submit" class="btn" style="border-color:transparent;background:#ffecec">Delete</button>
-      </form>
-    </td>
-  </tr>
-  {% endfor %}
+  <thead>
+    <tr>
+      <th>အသုံးပြုသူ</th>
+      <th>သက်တမ်း/Port</th>
+      <th>Status</th>
+      <th style="text-align:right;">စီမံရန်</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for u in users %}
+    <tr class="{% if u.expires and u.expires < today %}expired{% endif %}">
+      <td>
+        <div style="font-weight:700;">{{u.user}}</div>
+        <div style="font-size:11px; color:#888;">🔑 {{u.password}}</div>
+      </td>
+      <td>
+        <div>{{u.expires if u.expires else '—'}}</div>
+        <div style="font-size:11px; color:#999;">Port: {{u.port if u.port else 'auto'}}</div>
+      </td>
+      <td>
+        {% if u.status == "Online" %}<span class="pill ok">● Online</span>
+        {% elif u.status == "Offline" %}<span class="pill bad">○ Offline</span>
+        {% else %}<span class="pill unk">? Unknown</span>{% endif %}
+      </td>
+      <td>
+        <div style="display:flex; gap:5px; justify-content:flex-end;">
+          <button title="Renew" class="i-btn" onclick="renewUser('{{u.user}}')">⏳</button>
+          <button title="Pause" class="i-btn" onclick="toggleUser('{{u.user}}')">⏸️</button>
+          <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာလား?')" style="margin:0;">
+            <input type="hidden" name="user" value="{{u.user}}">
+            <button type="submit" class="i-btn">🗑️</button>
+          </form>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
+
 
 {% endif %}
 </body></html>"""
