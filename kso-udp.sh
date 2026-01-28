@@ -275,7 +275,9 @@ HTML = """<!doctype html>
     <div><label>🔌 UDP Port (6000–19999)</label><input name="port" placeholder="auto"></div>
   </div>
   <button class="btn" type="submit">Save + Sync</button>
-</form>
+  </form>
+</div>
+<table>
   <tr>
     <th>👤 User</th><th>🔑 Password</th><th>⏰ Expires</th>
     <th>🔌 Port</th><th>🔎 Status</th><th>🗑️ Delete</th>
