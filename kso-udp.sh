@@ -801,48 +801,44 @@ HTML = """<!doctype html>
   </div>
 </header>
 
-<form method="post" action="/add" class="box">
-  <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
-  
-  {% if msg %}
-  <div class="msg" style="background: #e6fffa; color: #234e52; border: 1px solid #b2f5ea; padding: 12px 20px; border-radius: 12px; text-align: center; max-width: 90px; width: 100%; margin: 10px auto; box-sizing: border-box;">
-    {{msg}}
-  </div>
-{% endif %}
+<div style="display: flex; justify-content: center; align-items: center; width: 100%; padding: 5px; background: #e0e5ec; min-height: 100vh; box-sizing: border-box; font-family: sans-serif;">
+  <form method="post" action="/add" style="width: 100%; max-width: 280px; padding: 15px; border-radius: 20px; background: #e0e5ec; box-shadow: 8px 8px 16px #bec3c9, -8px -8px 16px #ffffff; border: none;">
+    
+    <h3 style="text-align: center; color: #444; font-weight: 700; margin-bottom: 15px; font-size: 1em; letter-spacing: 0px;">➕ ADD USER</h3>
 
-{% if err %}
-  <div class="err" style="background: #fff5f5; color: #742a2a; border: 1px solid #fed7d7; padding: 12px 20px; border-radius: 12px; text-align: center; max-width: 90px; width: 100%; margin: 10px auto; box-sizing: border-box;">
-    {{err}}
-  </div>
-{% endif %}
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
+      
+      <div>
+        <label style="display: block; margin-left: 5px; margin-bottom: 2px; color: #666; font-weight: 600; font-size: 0.75em;">👤 Username</label>
+        <input name="user" required style="width: 100%; padding: 6px 10px; border: none; border-radius: 8px; background: #e0e5ec; box-shadow: inset 2px 2px 5px #bec3c9, inset -2px -2px 5px #ffffff; outline: none; color: #444; font-size: 0.8em; box-sizing: border-box;">
+      </div>
 
-  <div class="input-group">
-    <label><span class="icon">👤</span> Username</label>
-    <input name="user" required placeholder="ဥပမာ - mgmg123">
-  </div>
-  
-  <div class="input-group">
-    <label><span class="icon">🔑</span> Password</label>
-    <input type="password" name="password" required placeholder="လျှို့ဝှက်နံပါတ်">
-  </div>
+      <div>
+        <label style="display: block; margin-left: 5px; margin-bottom: 2px; color: #666; font-weight: 600; font-size: 0.75em;">🔑 Password</label>
+        <input name="password" required style="width: 100%; padding: 6px 10px; border: none; border-radius: 8px; background: #e0e5ec; box-shadow: inset 2px 2px 5px #bec3c9, inset -2px -2px 5px #ffffff; outline: none; color: #444; font-size: 0.8em; box-sizing: border-box;">
+      </div>
 
-  <div class="input-group">
-    <label><span class="icon">📅</span> Expiration Date</label>
-    <input type="date" name="expires" id="exp_input">
-  </div>
+      <div style="display: flex; gap: 8px;">
+        <div style="flex: 1.3;">
+          <label style="display: block; margin-left: 5px; margin-bottom: 2px; color: #666; font-weight: 600; font-size: 0.75em;">⏰ Expires</label>
+          <input name="expires" placeholder="2026..." style="width: 100%; padding: 6px 10px; border: none; border-radius: 8px; background: #e0e5ec; box-shadow: inset 2px 2px 5px #bec3c9, inset -2px -2px 5px #ffffff; outline: none; color: #444; font-size: 0.75em; box-sizing: border-box;">
+        </div>
+        <div style="flex: 0.7;">
+          <label style="display: block; margin-left: 5px; margin-bottom: 2px; color: #666; font-weight: 600; font-size: 0.75em;">🔌 Port</label>
+          <input name="port" placeholder="auto" style="width: 100%; padding: 6px 10px; border: none; border-radius: 8px; background: #e0e5ec; box-shadow: inset 2px 2px 5px #bec3c9, inset -2px -2px 5px #ffffff; outline: none; color: #444; font-size: 0.75em; box-sizing: border-box;">
+        </div>
+      </div>
 
-  <div class="input-group">
-    <label><span class="icon">🚀</span> UDP Port</label>
-    <input type="number" name="port" placeholder="auto (6000-19999)">
-  </div>
+    </div>
 
-  <button class="btn" type="submit">Save & Sync System</button>
-</form>
+    <div style="text-align: center;">
+      <button type="submit" style="width: 100%; padding: 8px; border: none; border-radius: 12px; background: #e0e5ec; color: #0a8a0a; font-weight: 700; font-size: 0.85em; cursor: pointer; box-shadow: 3px 3px 6px #bec3c9, -3px -3px 6px #ffffff;">
+        SAVE + SYNC
+      </button>
+    </div>
 
-
-<table>
-<table>
-  <thead>
+  </form>
+</div>
     <tr>
       <th>အသုံးပြုသူ</th>
       <th>သက်တမ်း/Port</th>
