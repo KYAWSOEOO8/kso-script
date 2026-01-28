@@ -1215,7 +1215,7 @@ def favicon(): return ("",204)
 def handle_405(e): return redirect(url_for('index'))
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=8880)
+  app.run(host="0.0.0.0", port=8080)
 PY
 
 # ===== Web systemd =====
