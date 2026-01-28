@@ -751,26 +751,24 @@ HTML = """<!doctype html>
     </form>
   </div>
 {% else %}
-<header style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 15px; margin-bottom: 25px;">
-  <img src="{{ logo }}" alt="KSO VIP" 
-       style="height: 85px; width: auto; border-radius: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+<header style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px; gap: 15px;">
+  
+  <div class="logo-container">
+    <img src="{{ logo }}" alt="KSO-VIP" style="width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+  </div>
+
   <div>
     <h1 style="margin: 0; font-size: 1.8rem; font-weight: bold; color: var(--fg);">KSO VIP</h1>
+    <p style="margin: 5px 0 0; color: #666; font-size: 0.9rem;">KSO-ZIVPN-User Panel</p>
   </div>
-  <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 280px;">
+
+  <div style="width: 100%; max-width: 280px;">
     <a class="btn" href="https://m.me/kyawsoe.oo.1292019" target="_blank" rel="noopener" 
-       style="background: #0084ff; color: white; border: none; padding: 10px; font-weight: bold;">
+       style="display: block; background: #0084ff; color: white; border: none; padding: 12px; font-weight: bold; text-decoration: none; border-radius: 8px;">
       💬 Contact (Messenger)
-    </a>
-    <a class="btn" href="/logout" 
-       style="background: #f1f1f1; border: 1px solid #ddd; padding: 10px;">
-      🚪 Logout
     </a>
   </div>
 </header>
-
-
-
 <form method="post" action="/add" class="box">
   <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
   
