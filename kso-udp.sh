@@ -262,49 +262,20 @@ HTML = """<!doctype html>
   </div>
 </header>
 
-<div style="display: flex; justify-content: center; align-items: center; width: 100%; padding: 15px; background: #e0e5ec; min-height: 100vh; box-sizing: border-box; font-family: sans-serif;">
-  <form method="post" action="/add" style="width: 100%; max-width: 300px; padding: 25px; border-radius: 30px; background: #e0e5ec; box-shadow: 15px 15px 30px #bec3c9, -15px -15px 30px #ffffff; border: none;">
-    
-    <h3 style="text-align: center; color: #444; font-weight: 300; margin-bottom: 25px; letter-spacing: 0.5px; font-size: 1.2em;">➕ ADD NEW USER</h3>
-
-    {% if msg %}<div style="color: #0a8a0a; text-align: center; margin-bottom: 15px; font-weight: 300; font-size: 0.9em;">{{msg}}</div>{% endif %}
-    {% if err %}<div style="color: #c0392b; text-align: center; margin-bottom: 15px; font-weight: 300; font-size: 0.9em;">{{err}}</div>{% endif %}
-
-    <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
-      
-      <div>
-        <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 300; font-size: 0.85em;">👤 Username</label>
-        <input name="user" required style="width: 100%; padding: 10px 15px; border: none; border-radius: 12px; background: #e0e5ec; box-shadow: inset 4px 4px 8px #bec3c9, inset -4px -4px 8px #ffffff; outline: none; color: #444; box-sizing: border-box;">
-      </div>
-
-      <div>
-        <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 300; font-size: 0.85em;">🔑 Password</label>
-        <input name="password" required style="width: 100%; padding: 10px 15px; border: none; border-radius: 12px; background: #e0e5ec; box-shadow: inset 4px 4px 8px #bec3c9, inset -4px -4px 8px #ffffff; outline: none; color: #444; box-sizing: border-box;">
-      </div>
-
-      <div style="display: flex; gap: 15px;">
-        <div style="flex: 1;">
-          <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 300; font-size: 0.85em;">⏰ Expires</label>
-          <input name="expires" placeholder="2025-12-31" style="width: 100%; padding: 10px 15px; border: none; border-radius: 12px; background: #e0e5ec; box-shadow: inset 4px 4px 8px #bec3c9, inset -4px -4px 8px #ffffff; outline: none; color: #444; box-sizing: border-box;">
-        </div>
-        <div style="flex: 1;">
-          <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 300; font-size: 0.85em;">🔌 UDP Port</label>
-          <input name="port" placeholder="auto" style="width: 100%; padding: 10px 15px; border: none; border-radius: 12px; background: #e0e5ec; box-shadow: inset 4px 4px 8px #bec3c9, inset -4px -4px 8px #ffffff; outline: none; color: #444; box-sizing: border-box;">
-        </div>
-      </div>
-
-    </div>
-
-    <div style="text-align: center;">
-      <button type="submit" style="width: 90%; padding: 12px; border: none; border-radius: 15px; background: #e0e5ec; color: #0a8a0a; font-weight: 300; font-size: 1em; cursor: pointer; box-shadow: 5px 5px 10px #bec3c9, -5px -5px 10px #ffffff; transition: all 0.2s ease;">
-        SAVE + SYNC
-      </button>
-    </div>
-
-  </form>
-</div>
-
-<table>
+<form method="post" action="/add" class="box">
+  <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
+  {% if msg %}<div class="msg">{{msg}}</div>{% endif %}
+  {% if err %}<div class="err">{{err}}</div>{% endif %}
+  <div class="row">
+    <div><label>👤 User</label><input name="user" required></div>
+    <div><label>🔑 Password</label><input name="password" required></div>
+  </div>
+  <div class="row">
+    <div><label>⏰ Expires (ထည့်သွင်းလိုသည့်ရက်)</label><input name="expires" placeholder="2025-12-31 or 30"></div>
+    <div><label>🔌 UDP Port (6000–19999)</label><input name="port" placeholder="auto"></div>
+  </div>
+  <button class="btn" type="submit">Save + Sync</button>
+</form>
   <tr>
     <th>👤 User</th><th>🔑 Password</th><th>⏰ Expires</th>
     <th>🔌 Port</th><th>🔎 Status</th><th>🗑️ Delete</th>
