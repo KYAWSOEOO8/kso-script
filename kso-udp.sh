@@ -187,125 +187,130 @@ HTML = """<!doctype html>
 <meta http-equiv="refresh" content="120">
 <style>
  :root{
-  --bg:#ffffff; --fg:#111; --muted:#666; --card:#fafafa; --bd:#e5e5e5;
-  --ok:#0a8a0a; --bad:#c0392b; --unk:#666; --btn:#fff; --btnbd:#ccc;
-  --pill:#f5f5f5; --pill-bad:#ffecec; --pill-ok:#eaffe6; --pill-unk:#f0f0f0;
+  --bg:#f0f2f5; --fg:#1e293b; --muted:#64748b; --card:#ffffff; --bd:#e2e8f0;
+  --ok:#10b981; --bad:#ef4444; --unk:#94a3b8; --btn:#ffffff; --btnbd:#cbd5e1;
+  --pill-bad:#fee2e2; --pill-ok:#d1fae5; --pill-unk:#f1f5f9;
  }
- html,body{background:var(--bg);color:var(--fg); min-height: 100vh;}
+ html,body{background:var(--bg); color:var(--fg); min-height: 100vh; margin:0; padding:0;}
  body{
-   font-family:system-ui,Segoe UI,Roboto,Arial;
-   margin:0; 
-   display:flex; 
-   flex-direction:column; 
-   align-items:center; 
-   padding:24px;
-   box-sizing: border-box;
+   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+   display:flex; flex-direction:column; align-items:center; 
+   padding: 12px; box-sizing: border-box;
  }
- header{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:24px;text-align:center}
- h1{margin:0;font-size:1.8em;font-weight:600;line-height:1.2}
- .sub{color:var(--muted);font-size:.95em}
+ header{display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:20px; text-align:center; width:100%;}
+ h1{margin:0; font-size:1.6em; font-weight:700; color:#1e40af;}
+ 
  .btn{
-   padding:8px 14px;border-radius:999px;border:1px solid var(--btnbd);
-   background:var(--btn);color:var(--fg);text-decoration:none;white-space:nowrap;cursor:pointer;
-   display: inline-block;
+   padding:10px 16px; border-radius:12px; border:1px solid var(--btnbd);
+   background:var(--btn); color:var(--fg); text-decoration:none; cursor:pointer;
+   display: inline-block; font-weight: 500; font-size: 14px; transition: 0.2s;
  }
- table{border-collapse:collapse;width:100%;max-width:300px;margin: 0 auto}
- th,td{border:1px solid var(--bd);padding:10px;text-align:center} /* စာသားတွေကိုပါ အလယ်ပို့ထားပါတယ် */
- th{background:var(--card)}
- .ok{color:var(--ok);background:var(--pill-ok)}
- .bad{color:var(--bad);background:var(--pill-bad)}
- .unk{color:var(--unk);background:var(--pill-unk)}
- .pill{display:inline-block;padding:4px 10px;border-radius:999px}
- form.box{margin:18px auto;padding:24px;border:1px solid var(--bd);border-radius:12px;background:var(--card);max-width:300px;width:100%;text-align:left}
- label{display:block;margin:6px 0 2px}
- input{width:100%;padding:9px 12px;border:1px solid var(--bd);border-radius:10px;box-sizing:border-box}
- .row{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
- .row>div{flex:1 1 220px}
- .msg{margin:10px 0;color:var(--ok);text-align:center}
- .err{margin:10px 0;color:var(--bad);text-align:center}
- .muted{color:var(--muted)}
- .delform{display:inline}
- tr.expired td{opacity:.9; text-decoration-color: var(--bad);}
- .center{display:flex;align-items:center;justify-content:center;text-align:center}
- .login-card{max-width:300px;width:100%;margin:auto;padding:24px;border:1px solid var(--bd);border-radius:14px;background:var(--card)}
- .login-card h3{margin:10px 0 6px}
- .logo{height:64px;width:auto;border-radius:14px;box-shadow:0 2px 6px rgba(0,0,0,0.15)}
+ 
+ /* Form Box */
+ form.box{
+   margin:10px auto; padding:20px; border-radius:16px; 
+   background:var(--card); max-width:500px; width:100%; 
+   box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); box-sizing: border-box;
+ }
+ h3{margin-top:0; font-size:1.1em; color:#334155; border-bottom: 1px solid var(--bd); padding-bottom:10px;}
+ label{display:block; margin:12px 0 4px; font-weight: 600; font-size: 13px; color:var(--muted);}
+ input{
+   width:100%; padding:11px; border:1px solid var(--bd); border-radius:8px; 
+   box-sizing:border-box; background:#f8fafc; font-size: 15px;
+ }
+ .row{display:flex; gap:12px; flex-wrap:wrap;}
+ .row>div{flex:1 1 180px;}
+
+ /* Table Styling */
+ .table-container { width:100%; max-width:600px; overflow-x:auto; margin-top:20px; }
+ table{ border-collapse:collapse; width:100%; background:var(--card); border-radius:12px; overflow:hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);}
+ th{ background:#f8fafc; padding:12px 8px; font-size:13px; color:var(--muted); text-transform:uppercase; border-bottom:2px solid var(--bd);}
+ td{ padding:14px 8px; text-align:center; border-bottom:1px solid var(--bd); font-size:14px;}
+ 
+ .pill{ display:inline-block; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:600; }
+ .ok{ color:var(--ok); background:var(--pill-ok); }
+ .bad{ color:var(--bad); background:var(--pill-bad); }
+ .unk{ color:var(--unk); background:var(--pill-unk); }
+
+ .msg{ background:#d1fae5; color:#065f46; padding:10px; border-radius:8px; margin-bottom:15px; text-align:center; font-size:14px; }
+ .err{ background:#fee2e2; color:#991b1b; padding:10px; border-radius:8px; margin-bottom:15px; text-align:center; font-size:14px; }
+
+ .login-card{ max-width:380px; width:95%; margin-top:50px; padding:30px; border-radius:20px; background:var(--card); box-shadow: 0 10px 25px rgba(0,0,0,0.1); box-sizing: border-box;}
+ .logo{ height:70px; width:70px; border-radius:18px; margin-bottom:10px; }
 </style></head><body>
 
 {% if not authed %}
-  <div class="login-card">
-    <div class="center"><img class="logo" src="{{ logo }}" alt="KSO-VIP"></div>
-    <h3 class="center">KSO-VIP</h3>
+  <div class="login-card" style="text-align:center;">
+    <img class="logo" src="{{ logo }}" alt="KSO-VIP">
+    <h3>KSO-VIP Login</h3>
     {% if err %}<div class="err">{{err}}</div>{% endif %}
-    <form method="post" action="/login">
+    <form method="post" action="/login" style="text-align:left;">
       <label>Username</label>
       <input name="u" autofocus required>
-      <label style="margin-top:8px">Password</label>
+      <label>Password</label>
       <input name="p" type="password" required>
-      <button class="btn" type="submit" style="margin-top:20px;width:100%; background:#111; color:#fff">Login</button>
+      <button class="btn" type="submit" style="margin-top:25px; width:100%; background:#1e40af; color:#fff; border:none;">အကောင့်ဝင်ရန်</button>
     </form>
   </div>
 {% else %}
 <header>
-  <div class="logo-container">
-    <img src="{{ logo }}" alt="KSO-VIP" style="width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-  </div>
-  <div>
-    <h1>KSO VIP</h1>
-  </div>
-  <div style="width: 100%; max-width: 100px;">
-    <a class="btn" href="https://m.me/kyawsoe.oo.1292019" target="_blank" rel="noopener" 
-       style="display: block; background: #0084ff; color: white; border: none; padding: 12px; font-weight: bold; text-decoration: none; border-radius: 8px;">
-      💬 Contact (Messenger)
-    </a>
-   <a class="btn" href="/logout">Logout</a>
+  <img src="{{ logo }}" alt="KSO-VIP" style="width: 70px; height: 70px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+  <h1>KSO VIP PANEL</h1>
+  <div style="display:flex; gap:10px; margin-top:5px;">
+    <a class="btn" href="https://m.me/kyawsoe.oo.1292019" target="_blank" style="background:#0084ff; color:#fff; border:none;">💬 Contact</a>
+    <a class="btn" href="/logout" style="color:#ef4444;">Logout</a>
   </div>
 </header>
 
 <form method="post" action="/add" class="box">
-  <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
-  {% if msg %}<div class="msg">{{msg}}</div>{% endif %}
-  {% if err %}<div class="err">{{err}}</div>{% endif %}
+  <h3>➕ အသုံးပြုသူအသစ်ထည့်ရန်</h3>
+  {% if msg %}<div class="msg">✅ {{msg}}</div>{% endif %}
+  {% if err %}<div class="err">⚠️ {{err}}</div>{% endif %}
   <div class="row">
-    <div><label>👤 User</label><input name="user" required></div>
-    <div><label>🔑 Password</label><input name="password" required></div>
+    <div><label>👤 Username</label><input name="user" placeholder="Name" required></div>
+    <div><label>🔑 Password</label><input name="password" placeholder="Pass" required></div>
   </div>
   <div class="row">
-    <div><label>⏰ Expires (ထည့်သွင်းလိုသည့်ရက်)</label><input name="expires" placeholder="2025-12-31 or 30"></div>
-    <div><label>🔌 UDP Port (6000–19999)</label><input name="port" placeholder="auto"></div>
+    <div><label>⏰ Expires (ရက်အရေအတွက်)</label><input name="expires" placeholder="ဥပမာ- 30"></div>
+    <div><label>🔌 UDP Port</label><input name="port" placeholder="auto (6000-19999)"></div>
   </div>
-  <button class="btn" type="submit">Save + Sync</button>
-  </form>
-</div>
-<table>
-  <tr>
-    <th>👤 User</th><th>🔑 Password</th><th>⏰ Expires</th>
-    <th>🔌 Port</th><th>🔎 Status</th><th>🗑️ Delete</th>
-  </tr>
-  {% for u in users %}
-  <tr class="{% if u.expires and u.expires < today %}expired{% endif %}">
-    <td class="usercell">{{u.user}}</td>
-    <td>{{u.password}}</td>
-    <td>{% if u.expires %}{{u.expires}}{% else %}<span class="muted">—</span>{% endif %}</td>
-    <td>{% if u.port %}{{u.port}}{% else %}<span class="muted">—</span>{% endif %}</td>
-    <td>
-      {% if u.status == "Online" %}<span class="pill ok">Online</span>
-      {% elif u.status == "Offline" %}<span class="pill bad">Offline</span>
-      {% else %}<span class="pill unk">Unknown</span>
-      {% endif %}
-    </td>
-    <td>
-      <form class="delform" method="post" action="/delete" onsubmit="return confirm('ဖျက်မလား?')">
-        <input type="hidden" name="user" value="{{u.user}}">
-        <button type="submit" class="btn" style="border-color:transparent;background:#ffecec">Delete</button>
-      </form>
-    </td>
-  </tr>
-  {% endfor %}
-</table>
+  <button class="btn" type="submit" style="margin-top:20px; width:100%; background:#059669; color:#fff; border:none; font-size:16px;">SAVE + SYNC</button>
+</form>
 
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>User/Pass</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr {% if u.expires and u.expires < today %}style="background:#fff1f2;"{% endif %}>
+        <td style="text-align:left; padding-left:15px;">
+          <div style="font-weight:700;">{{u.user}}</div>
+          <div style="font-size:11px; color:var(--muted);">PW: {{u.password}} | Exp: {{u.expires if u.expires else '—'}}</div>
+        </td>
+        <td>
+          {% if u.status == "Online" %}<span class="pill ok">Online</span>
+          {% else %}<span class="pill unk">Offline</span>{% endif %}
+        </td>
+        <td>
+          <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာ သေချာပါသလား?')" style="margin:0;">
+            <input type="hidden" name="user" value="{{u.user}}">
+            <button type="submit" style="background:none; border:none; cursor:pointer; font-size:18px;">🗑️</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endif %}
 </body></html>"""
+
 
 app = Flask(__name__)
 
