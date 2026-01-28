@@ -800,35 +800,20 @@ HTML = """<!doctype html>
   </div>
 </header>
 
-<div style="display: flex; justify-content: center; align-items: center; width: 90%; padding: 5px; background: #e0e5ec; min-height: 100vh; box-sizing: border-box; font-family: sans-serif;">
-  <form method="post" action="/add" style="width: 100%; max-width: 90px; padding: 15px; border-radius: 20px; background: #e0e5ec; box-shadow: 8px 8px 16px #bec3c9, -8px -8px 16px #ffffff; border: none;">
-    
-    <h3 style="text-align: center; color: #444; font-weight: 400; margin-bottom: 15px; font-size: 1em; letter-spacing: 0px;">➕ ADD USER</h3>
-
-    <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px;">
-      
-      <div>
-        <label style="display: block; margin-left: 5px; margin-bottom: 2px; color: #666; font-weight: 400; font-size: 0.75em;">👤 Username</label>
-        <input name="user" required style="width: 90%; padding: 6px 10px; border: none; border-radius: 8px; background: #e0e5ec; box-shadow: inset 2px 2px 5px #bec3c9, inset -2px -2px 5px #ffffff; outline: none; color: #444; font-size: 0.8em; box-sizing: border-box;">
-      </div>
-
-      <div>
-        <label style="display: block; margin-left: 5px; margin-bottom: 2px; color: #666; font-weight: 400; font-size: 0.75em;">🔑 Password</label>
-        <input name="password" required style="width: 90%; padding: 6px 10px; border: none; border-radius: 8px; background: #e0e5ec; box-shadow: inset 2px 2px 5px #bec3c9, inset -2px -2px 5px #ffffff; outline: none; color: #444; font-size: 0.8em; box-sizing: border-box;">
-      </div>
-
-      <div style="display: flex; gap: 8px;">
-        <div style="flex: 1.3;">
-          <label style="display: block; margin-left: 5px; margin-bottom: 2px; color: #666; font-weight: 400; font-size: 0.75em;">⏰ Expires</label>
-          <input name="expires" placeholder="2026..." style="width: 90%; padding: 6px 10px; border: none; border-radius: 8px; background: #e0e5ec; box-shadow: inset 2px 2px 5px #bec3c9, inset -2px -2px 5px #ffffff; outline: none; color: #444; font-size: 0.75em; box-sizing: border-box;">
-        </div>
-        <div style="flex: 0.7;">
-          <label style="display: block; margin-left: 5px; margin-bottom: 2px; color: #666; font-weight: 400; font-size: 0.75em;">🔌 Port</label>
-          <input name="port" placeholder="auto" style="width: 90%; padding: 6px 10px; border: none; border-radius: 8px; background: #e0e5ec; box-shadow: inset 2px 2px 5px #bec3c9, inset -2px -2px 5px #ffffff; outline: none; color: #444; font-size: 0.75em; box-sizing: border-box;">
-        </div>
-      </div>
-
-    </div>
+<form method="post" action="/add" class="box">
+  <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
+  {% if msg %}<div class="msg">{{msg}}</div>{% endif %}
+  {% if err %}<div class="err">{{err}}</div>{% endif %}
+  <div class="row">
+    <div><label>👤 User</label><input name="user" required></div>
+    <div><label>🔑 Password</label><input name="password" required></div>
+  </div>
+  <div class="row">
+    <div><label>⏰ Expires (ထည့်သွင်းလိုသည့်ရက်)</label><input name="expires" placeholder="2025-12-31 or 30"></div>
+    <div><label>🔌 UDP Port (6000–19999)</label><input name="port" placeholder="auto"></div>
+  </div>
+  <button class="btn" type="submit">Save + Sync</button>
+</form>
 
     <div style="text-align: center;">
       <button type="submit" style="width: 90%; padding: 8px; border: none; border-radius: 12px; background: #e0e5ec; color: #0a8a0a; font-weight: 400; font-size: 0.85em; cursor: pointer; box-shadow: 3px 3px 6px #bec3c9, -3px -3px 6px #ffffff;">
