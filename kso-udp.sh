@@ -263,23 +263,44 @@ HTML = """<!doctype html>
   </div>
 </header>
 
-<div style="display: flex; justify-content: center; width: 100%;">
-  <form method="post" action="/add" class="box" style="width: 100%; max-width: 600px; text-align: center;">
-    <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
-    {% if msg %}<div class="msg">{{msg}}</div>{% endif %}
-    {% if err %}<div class="err">{{err}}</div>{% endif %}
-    <div class="row">
-      <div><label>👤 User</label><input name="user" required></div>
-      <div><label>🔑 Password</label><input name="password" required></div>
+<div style="display: flex; justify-content: center; align-items: center; width: 100%; padding: 20px; background: #e0e5ec; min-height: 100vh; box-sizing: border-box;">
+  <form method="post" action="/add" style="width: 100%; max-width: 550px; padding: 40px; border-radius: 40px; background: #e0e5ec; box-shadow: 20px 20px 60px #bec3c9, -20px -20px 60px #ffffff; border: none;">
+    
+    <h3 style="text-align: center; color: #444; font-weight: 800; margin-bottom: 30px; letter-spacing: 1px;">➕ ADD NEW USER</h3>
+
+    {% if msg %}<div style="color: #0a8a0a; text-align: center; margin-bottom: 15px; font-weight: 600;">{{msg}}</div>{% endif %}
+    {% if err %}<div style="color: #c0392b; text-align: center; margin-bottom: 15px; font-weight: 600;">{{err}}</div>{% endif %}
+
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+      <div style="flex: 1; min-width: 200px;">
+        <label style="display: block; margin-left: 10px; margin-bottom: 8px; color: #666; font-weight: 600; font-size: 0.9em;">👤 Username</label>
+        <input name="user" required style="width: 100%; padding: 12px 15px; border: none; border-radius: 15px; background: #e0e5ec; box-shadow: inset 6px 6px 12px #bec3c9, inset -6px -6px 12px #ffffff; outline: none; color: #444;">
+      </div>
+      <div style="flex: 1; min-width: 200px;">
+        <label style="display: block; margin-left: 10px; margin-bottom: 8px; color: #666; font-weight: 600; font-size: 0.9em;">🔑 Password</label>
+        <input name="password" required style="width: 100%; padding: 12px 15px; border: none; border-radius: 15px; background: #e0e5ec; box-shadow: inset 6px 6px 12px #bec3c9, inset -6px -6px 12px #ffffff; outline: none; color: #444;">
+      </div>
     </div>
-    <div class="row">
-      <div><label>⏰ Expires</label><input name="expires" placeholder="2025-12-31 or 30"></div>
-      <div><label>🔌 UDP Port</label><input name="port" placeholder="auto"></div>
+
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 30px;">
+      <div style="flex: 1; min-width: 200px;">
+        <label style="display: block; margin-left: 10px; margin-bottom: 8px; color: #666; font-weight: 600; font-size: 0.9em;">⏰ Expires</label>
+        <input name="expires" placeholder="2025-12-31" style="width: 100%; padding: 12px 15px; border: none; border-radius: 15px; background: #e0e5ec; box-shadow: inset 6px 6px 12px #bec3c9, inset -6px -6px 12px #ffffff; outline: none; color: #444;">
+      </div>
+      <div style="flex: 1; min-width: 200px;">
+        <label style="display: block; margin-left: 10px; margin-bottom: 8px; color: #666; font-weight: 600; font-size: 0.9em;">🔌 UDP Port</label>
+        <input name="port" placeholder="auto" style="width: 100%; padding: 12px 15px; border: none; border-radius: 15px; background: #e0e5ec; box-shadow: inset 6px 6px 12px #bec3c9, inset -6px -6px 12px #ffffff; outline: none; color: #444;">
+      </div>
     </div>
-    <button class="btn" type="submit" style="margin-top: 15px; background: #0a8a0a; color: white;">Save + Sync</button>
+
+    <div style="text-align: center;">
+      <button type="submit" style="width: 100%; max-width: 250px; padding: 15px; border: none; border-radius: 20px; background: #e0e5ec; color: #0a8a0a; font-weight: 800; font-size: 1.1em; cursor: pointer; box-shadow: 6px 6px 12px #bec3c9, -6px -6px 12px #ffffff; transition: all 0.2s ease-in-out;">
+        SAVE + SYNC
+      </button>
+    </div>
+
   </form>
 </div>
-
 
 <table>
   <tr>
