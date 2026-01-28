@@ -1266,7 +1266,7 @@ systemctl enable --now zivpn-web.service
 
 IP=$(hostname -I | awk '{print $1}')
 echo -e "\n$LINE\n${G}✅ Done${Z}"
-echo -e "${C}Web Panel   :${Z} ${Y}http://$IP:8080${Z}"
+echo -e "${C}Web Panel   :${Z} ${Y}http://$IP:9983${Z}"
 echo -e "${C}users.json  :${Z} ${Y}/etc/zivpn/users.json${Z}"
 echo -e "${C}config.json :${Z} ${Y}/etc/zivpn/config.json${Z}"
 echo -e "${C}Services    :${Z} ${Y}systemctl status|restart zivpn  •  systemctl status|restart zivpn-web${Z}"
