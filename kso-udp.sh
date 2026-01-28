@@ -209,7 +209,7 @@ HTML = """<!doctype html>
    background:var(--btn);color:var(--fg);text-decoration:none;white-space:nowrap;cursor:pointer;
    display: inline-block;
  }
- table{border-collapse:collapse;width:100%;max-width:980px;margin: 0 auto}
+ table{border-collapse:collapse;width:100%;max-width:300px;margin: 0 auto}
  th,td{border:1px solid var(--bd);padding:10px;text-align:center} /* စာသားတွေကိုပါ အလယ်ပို့ထားပါတယ် */
  th{background:var(--card)}
  .ok{color:var(--ok);background:var(--pill-ok)}
@@ -264,32 +264,32 @@ HTML = """<!doctype html>
 </header>
 
 <div style="display: flex; justify-content: center; align-items: center; width: 100%; padding: 15px; background: #e0e5ec; min-height: 100vh; box-sizing: border-box; font-family: sans-serif;">
-  <form method="post" action="/add" style="width: 100%; max-width: 400px; padding: 25px; border-radius: 30px; background: #e0e5ec; box-shadow: 15px 15px 30px #bec3c9, -15px -15px 30px #ffffff; border: none;">
+  <form method="post" action="/add" style="width: 100%; max-width: 300px; padding: 25px; border-radius: 30px; background: #e0e5ec; box-shadow: 15px 15px 30px #bec3c9, -15px -15px 30px #ffffff; border: none;">
     
-    <h3 style="text-align: center; color: #444; font-weight: 700; margin-bottom: 25px; letter-spacing: 0.5px; font-size: 1.2em;">➕ ADD NEW USER</h3>
+    <h3 style="text-align: center; color: #444; font-weight: 300; margin-bottom: 25px; letter-spacing: 0.5px; font-size: 1.2em;">➕ ADD NEW USER</h3>
 
-    {% if msg %}<div style="color: #0a8a0a; text-align: center; margin-bottom: 15px; font-weight: 600; font-size: 0.9em;">{{msg}}</div>{% endif %}
-    {% if err %}<div style="color: #c0392b; text-align: center; margin-bottom: 15px; font-weight: 600; font-size: 0.9em;">{{err}}</div>{% endif %}
+    {% if msg %}<div style="color: #0a8a0a; text-align: center; margin-bottom: 15px; font-weight: 300; font-size: 0.9em;">{{msg}}</div>{% endif %}
+    {% if err %}<div style="color: #c0392b; text-align: center; margin-bottom: 15px; font-weight: 300; font-size: 0.9em;">{{err}}</div>{% endif %}
 
     <div style="display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px;">
       
       <div>
-        <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 600; font-size: 0.85em;">👤 Username</label>
+        <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 300; font-size: 0.85em;">👤 Username</label>
         <input name="user" required style="width: 100%; padding: 10px 15px; border: none; border-radius: 12px; background: #e0e5ec; box-shadow: inset 4px 4px 8px #bec3c9, inset -4px -4px 8px #ffffff; outline: none; color: #444; box-sizing: border-box;">
       </div>
 
       <div>
-        <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 600; font-size: 0.85em;">🔑 Password</label>
+        <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 300; font-size: 0.85em;">🔑 Password</label>
         <input name="password" required style="width: 100%; padding: 10px 15px; border: none; border-radius: 12px; background: #e0e5ec; box-shadow: inset 4px 4px 8px #bec3c9, inset -4px -4px 8px #ffffff; outline: none; color: #444; box-sizing: border-box;">
       </div>
 
       <div style="display: flex; gap: 15px;">
         <div style="flex: 1;">
-          <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 600; font-size: 0.85em;">⏰ Expires</label>
+          <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 300; font-size: 0.85em;">⏰ Expires</label>
           <input name="expires" placeholder="2025-12-31" style="width: 100%; padding: 10px 15px; border: none; border-radius: 12px; background: #e0e5ec; box-shadow: inset 4px 4px 8px #bec3c9, inset -4px -4px 8px #ffffff; outline: none; color: #444; box-sizing: border-box;">
         </div>
         <div style="flex: 1;">
-          <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 600; font-size: 0.85em;">🔌 UDP Port</label>
+          <label style="display: block; margin-left: 10px; margin-bottom: 5px; color: #666; font-weight: 300; font-size: 0.85em;">🔌 UDP Port</label>
           <input name="port" placeholder="auto" style="width: 100%; padding: 10px 15px; border: none; border-radius: 12px; background: #e0e5ec; box-shadow: inset 4px 4px 8px #bec3c9, inset -4px -4px 8px #ffffff; outline: none; color: #444; box-sizing: border-box;">
         </div>
       </div>
@@ -297,7 +297,7 @@ HTML = """<!doctype html>
     </div>
 
     <div style="text-align: center;">
-      <button type="submit" style="width: 100%; padding: 12px; border: none; border-radius: 15px; background: #e0e5ec; color: #0a8a0a; font-weight: 700; font-size: 1em; cursor: pointer; box-shadow: 5px 5px 10px #bec3c9, -5px -5px 10px #ffffff; transition: all 0.2s ease;">
+      <button type="submit" style="width: 90%; padding: 12px; border: none; border-radius: 15px; background: #e0e5ec; color: #0a8a0a; font-weight: 300; font-size: 1em; cursor: pointer; box-shadow: 5px 5px 10px #bec3c9, -5px -5px 10px #ffffff; transition: all 0.2s ease;">
         SAVE + SYNC
       </button>
     </div>
