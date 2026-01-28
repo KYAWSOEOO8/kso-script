@@ -268,65 +268,39 @@ HTML = """<!doctype html>
     <div><label>👤 User</label><input name="user" required></div>
     <div><label>🔑 Password</label><input name="password" required></div>
   </div>
-    <div class="row">
-        <div>
-          <label>⏰ Expires (ရက်စွဲရွေးပါ သို့မဟုတ် ခလုတ်နှိပ်ပါ)</label>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <input type="date" name="expires" id="exp_input" style="flex: 1 1 150px;">
-              <button type="button" class="btn" onclick="setDays(30)" style="background:#e3f2fd; border-color:#2196f3; color:#000;">၁ လစာ</button>
-              <button type="button" class="btn" onclick="setDays(60)" style="background:#e3f2fd; border-color:#2196f3; color:#000;">၂ လစာ</button>
-          </div>
-        </div>
-        <div><label>🔌 UDP Port (6000–19999)</label><input name="port" placeholder="auto"></div>
-    </div>
-
+  <div class="row">
+    <div><label>⏰ Expires (ထည့်သွင်းလိုသည့်ရက်)</label><input name="expires" placeholder="2025-12-31 or 30"></div>
+    <div><label>🔌 UDP Port (6000–19999)</label><input name="port" placeholder="auto"></div>
+  </div>
   <button class="btn" type="submit">Save + Sync</button>
 </form>
 
 <table>
   <tr>
-    <th>အသုံးပြုသူ</th>
-    <th>သက်တမ်း/Port</th>
-    <th>Status</th>
-    <th style="text-align:right">စီမံရန်</th>
+    <th>👤 User</th><th>🔑 Password</th><th>⏰ Expires</th>
+    <th>🔌 Port</th><th>🔎 Status</th><th>🗑️ Delete</th>
   </tr>
   {% for u in users %}
   <tr class="{% if u.expires and u.expires < today %}expired{% endif %}">
-    <td><b>{{u.user}}</b><br><small style="color:#888;">🔑 {{u.password}}</small></td>
-    <td>{{u.expires if u.expires else '-'}}<br><small style="color:#888;">Port: {{u.port if u.port else 'auto'}}</small></td>
+    <td class="usercell">{{u.user}}</td>
+    <td>{{u.password}}</td>
+    <td>{% if u.expires %}{{u.expires}}{% else %}<span class="muted">—</span>{% endif %}</td>
+    <td>{% if u.port %}{{u.port}}{% else %}<span class="muted">—</span>{% endif %}</td>
     <td>
       {% if u.status == "Online" %}<span class="pill ok">Online</span>
       {% elif u.status == "Offline" %}<span class="pill bad">Offline</span>
-      {% else %}<span class="pill unk">Unknown</span>{% endif %}
+      {% else %}<span class="pill unk">Unknown</span>
+      {% endif %}
     </td>
-<td>
-  <div style="display:flex; gap:5px; justify-content:flex-end;">
-    
-    <form method="post" action="/renew" style="margin:0;">
-      <input type="hidden" name="user" value="{{u.user}}">
-      <button type="submit" class="btn" title="၃၀ ရက်တိုး">⏳</button>
-    </form>
-    
-    <form method="post" action="/toggle" style="margin:0;">
-      <input type="hidden" name="user" value="{{u.user}}">
-      <button type="submit" class="btn">
-        {% if u.password.startswith('PAUSED_') %}▶️{% else %}⏸️{% endif %}
-      </button>
-    </form>
-
-    <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာလား?')" style="margin:0;">
-      <input type="hidden" name="user" value="{{u.user}}">
-      <button type="submit" class="btn" style="background:#ffecec;">🗑️</button>
-    </form>
-    
-  </div>
-</td>
-
+    <td>
+      <form class="delform" method="post" action="/delete" onsubmit="return confirm('ဖျက်မလား?')">
+        <input type="hidden" name="user" value="{{u.user}}">
+        <button type="submit" class="btn" style="border-color:transparent;background:#ffecec">Delete</button>
+      </form>
+    </td>
   </tr>
   {% endfor %}
 </table>
-
-
 
 {% endif %}
 </body></html>"""
@@ -800,8 +774,7 @@ HTML = """<!doctype html>
       <label>⏰ Expires (ပြက္ခဒိန် သို့မဟုတ် ခလုတ်သုံးပါ)</label>
       <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <input type="date" name="expires" id="exp_input" style="flex: 1 1 150px;">
-          <button type="button" class="btn" onclick="setDays(30)" style="background:#e3f2fd; border-color:#2196f3; color:#000;">၁ လစာ</button>
-          <button type="button" class="btn" onclick="setDays(60)" style="background:#e3f2fd; border-color:#2196f3; color:#000;">၂ လစာ</button>
+          
       </div>
     </div>
     <div><label>🔌 UDP Port (6000–19999)</label><input name="port" placeholder="auto"></div>
@@ -837,8 +810,7 @@ HTML = """<!doctype html>
       </td>
       <td>
         <div style="display:flex; gap:5px; justify-content:flex-end;">
-          <button title="Renew" class="i-btn" onclick="renewUser('{{u.user}}')">⏳</button>
-          <button title="Pause" class="i-btn" onclick="toggleUser('{{u.user}}')">⏸️</button>
+
           <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာလား?')" style="margin:0;">
             <input type="hidden" name="user" value="{{u.user}}">
             <button type="submit" class="i-btn">🗑️</button>
