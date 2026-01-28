@@ -253,7 +253,7 @@ HTML = """<!doctype html>
   <div>
     <h1>KSO VIP</h1>
   </div>
-  <div style="width: 100%; max-width: 280px;">
+  <div style="width: 100%; max-width: 100px;">
     <a class="btn" href="https://m.me/kyawsoe.oo.1292019" target="_blank" rel="noopener" 
        style="display: block; background: #0084ff; color: white; border: none; padding: 12px; font-weight: bold; text-decoration: none; border-radius: 8px;">
       💬 Contact (Messenger)
