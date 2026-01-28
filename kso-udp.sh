@@ -299,26 +299,29 @@ HTML = """<!doctype html>
       {% elif u.status == "Offline" %}<span class="pill bad">Offline</span>
       {% else %}<span class="pill unk">Unknown</span>{% endif %}
     </td>
-    <td>
-      <div style="display:flex; gap:5px; justify-content:flex-end;">
-        <form method="post" action="/renew" style="margin:0;">
-          <input type="hidden" name="user" value="{{u.user}}">
-          <button type="submit" class="btn" title="၃၀ ရက်တိုး">⏳</button>
-        </form>
-        
-        <form method="post" action="/toggle" style="margin:0;">
-          <input type="hidden" name="user" value="{{u.user}}">
-          <button type="submit" class="btn">
-            {% if u.password.startswith('PAUSED_') %}▶️{% else %}⏸️{% endif %}
-          </button>
-        </form>
+<td>
+  <div style="display:flex; gap:5px; justify-content:flex-end;">
+    
+    <form method="post" action="/renew" style="margin:0;">
+      <input type="hidden" name="user" value="{{u.user}}">
+      <button type="submit" class="btn" title="၃၀ ရက်တိုး">⏳</button>
+    </form>
+    
+    <form method="post" action="/toggle" style="margin:0;">
+      <input type="hidden" name="user" value="{{u.user}}">
+      <button type="submit" class="btn">
+        {% if u.password.startswith('PAUSED_') %}▶️{% else %}⏸️{% endif %}
+      </button>
+    </form>
 
-        <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မလား?')" style="margin:0;">
-          <input type="hidden" name="user" value="{{u.user}}">
-          <button type="submit" class="btn" style="background:#ffecec">🗑️</button>
-        </form>
-      </div>
-    </td>
+    <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာလား?')" style="margin:0;">
+      <input type="hidden" name="user" value="{{u.user}}">
+      <button type="submit" class="btn" style="background:#ffecec;">🗑️</button>
+    </form>
+    
+  </div>
+</td>
+
   </tr>
   {% endfor %}
 </table>
