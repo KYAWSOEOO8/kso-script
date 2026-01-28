@@ -692,10 +692,10 @@ LISTEN_FALLBACK = "5667"
 RECENT_SECONDS = 120
 
 LOGO_URL = "https://raw.githubusercontent.com/KYAWSOEOO8/kso-script/main/icon.png"
+LOGO_URL = "https://raw.githubusercontent.com/KYAWSOEOO8/kso-script/main/icon.png"
 
 HTML = """<!doctype html>
 <html lang="my"><head><meta charset="utf-8">
-<title>ZIVPN User Panel</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="refresh" content="120">
 <style>
@@ -704,34 +704,43 @@ HTML = """<!doctype html>
   --ok:#0a8a0a; --bad:#c0392b; --unk:#666; --btn:#fff; --btnbd:#ccc;
   --pill:#f5f5f5; --pill-bad:#ffecec; --pill-ok:#eaffe6; --pill-unk:#f0f0f0;
  }
- html,body{background:var(--bg);color:var(--fg)}
- body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px}
- header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+ html,body{background:var(--bg);color:var(--fg); min-height: 100vh;}
+ body{
+   font-family:system-ui,Segoe UI,Roboto,Arial;
+   margin:0; 
+   display:flex; 
+   flex-direction:column; 
+   align-items:center; 
+   padding:24px;
+   box-sizing: border-box;
+ }
+ header{display:flex;flex-direction:column;align-items:center;gap:14px;margin-bottom:24px;text-align:center}
  h1{margin:0;font-size:1.8em;font-weight:600;line-height:1.2}
  .sub{color:var(--muted);font-size:.95em}
  .btn{
    padding:8px 14px;border-radius:999px;border:1px solid var(--btnbd);
-   background:var(--btn);color:var(--fg);text-decoration:none;white-space:nowrap;cursor:pointer
+   background:var(--btn);color:var(--fg);text-decoration:none;white-space:nowrap;cursor:pointer;
+   display: inline-block;
  }
- table{border-collapse:collapse;width:100%;max-width:980px}
- th,td{border:1px solid var(--bd);padding:10px;text-align:left}
+ table{border-collapse:collapse;width:100%;max-width:980px;margin: 0 auto}
+ th,td{border:1px solid var(--bd);padding:10px;text-align:center} /* စာသားတွေကိုပါ အလယ်ပို့ထားပါတယ် */
  th{background:var(--card)}
  .ok{color:var(--ok);background:var(--pill-ok)}
  .bad{color:var(--bad);background:var(--pill-bad)}
  .unk{color:var(--unk);background:var(--pill-unk)}
  .pill{display:inline-block;padding:4px 10px;border-radius:999px}
- form.box{margin:18px 0;padding:12px;border:1px solid var(--bd);border-radius:12px;background:var(--card);max-width:980px}
+ form.box{margin:18px auto;padding:24px;border:1px solid var(--bd);border-radius:12px;background:var(--card);max-width:480px;width:100%;text-align:left}
  label{display:block;margin:6px 0 2px}
- input{width:100%;max-width:420px;padding:9px 12px;border:1px solid var(--bd);border-radius:10px}
- .row{display:flex;gap:18px;flex-wrap:wrap}
+ input{width:100%;padding:9px 12px;border:1px solid var(--bd);border-radius:10px;box-sizing:border-box}
+ .row{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
  .row>div{flex:1 1 220px}
- .msg{margin:10px 0;color:var(--ok)}
- .err{margin:10px 0;color:var(--bad)}
+ .msg{margin:10px 0;color:var(--ok);text-align:center}
+ .err{margin:10px 0;color:var(--bad);text-align:center}
  .muted{color:var(--muted)}
  .delform{display:inline}
  tr.expired td{opacity:.9; text-decoration-color: var(--bad);}
- .center{display:flex;align-items:center;justify-content:center}
- .login-card{max-width:420px;margin:70px auto;padding:24px;border:1px solid var(--bd);border-radius:14px;background:var(--card)}
+ .center{display:flex;align-items:center;justify-content:center;text-align:center}
+ .login-card{max-width:420px;width:100%;margin:auto;padding:24px;border:1px solid var(--bd);border-radius:14px;background:var(--card)}
  .login-card h3{margin:10px 0 6px}
  .logo{height:64px;width:auto;border-radius:14px;box-shadow:0 2px 6px rgba(0,0,0,0.15)}
 </style></head><body>
@@ -747,21 +756,18 @@ HTML = """<!doctype html>
       <input name="u" autofocus required>
       <label style="margin-top:8px">Password</label>
       <input name="p" type="password" required>
-      <button class="btn" type="submit" style="margin-top:12px;width:100%">Login</button>
+      <button class="btn" type="submit" style="margin-top:20px;width:100%; background:#111; color:#fff">Login</button>
     </form>
   </div>
 {% else %}
-<header style="display: flex; flex-direction: column; align-items: center; text-align: center; padding: 20px; gap: 15px;">
-  
+<header>
   <div class="logo-container">
     <img src="{{ logo }}" alt="KSO-VIP" style="width: 80px; height: 80px; border-radius: 50%; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
   </div>
-
   <div>
-    <h1 style="margin: 0; font-size: 1.8rem; font-weight: bold; color: var(--fg);">KSO VIP</h1>
-    <p style="margin: 5px 0 0; color: #666; font-size: 0.9rem;">KSO-ZIVPN-User Panel</p>
+    <h1>KSO VIP</h1>
+    <p class="sub">KSO-ZIVPN-User Panel</p>
   </div>
-
   <div style="width: 100%; max-width: 280px;">
     <a class="btn" href="https://m.me/kyawsoe.oo.1292019" target="_blank" rel="noopener" 
        style="display: block; background: #0084ff; color: white; border: none; padding: 12px; font-weight: bold; text-decoration: none; border-radius: 8px;">
@@ -769,6 +775,7 @@ HTML = """<!doctype html>
     </a>
   </div>
 </header>
+
 <form method="post" action="/add" class="box">
   <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
   
