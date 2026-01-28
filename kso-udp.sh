@@ -227,7 +227,7 @@ HTML = """<!doctype html>
  .delform{display:inline}
  tr.expired td{opacity:.9; text-decoration-color: var(--bad);}
  .center{display:flex;align-items:center;justify-content:center;text-align:center}
- .login-card{max-width:420px;width:100%;margin:auto;padding:24px;border:1px solid var(--bd);border-radius:14px;background:var(--card)}
+ .login-card{max-width:300px;width:100%;margin:auto;padding:24px;border:1px solid var(--bd);border-radius:14px;background:var(--card)}
  .login-card h3{margin:10px 0 6px}
  .logo{height:64px;width:auto;border-radius:14px;box-shadow:0 2px 6px rgba(0,0,0,0.15)}
 </style></head><body>
@@ -747,7 +747,7 @@ HTML = """<!doctype html>
    background:var(--btn);color:var(--fg);text-decoration:none;white-space:nowrap;cursor:pointer;
    display: inline-block;
  }
- table{border-collapse:collapse;width:100%;max-width:980px;margin: 0 auto}
+ table{border-collapse:collapse;width:100%;max-width:400px;margin: 0 auto}
  th,td{border:1px solid var(--bd);padding:10px;text-align:center} /* စာသားတွေကိုပါ အလယ်ပို့ထားပါတယ် */
  th{background:var(--card)}
  .ok{color:var(--ok);background:var(--pill-ok)}
@@ -860,7 +860,7 @@ HTML = """<!doctype html>
         {% if u.status == "Online" %}
           <span class="pill ok">● Online</span>
         {% elif u.status == "Offline" %}
-          <span class="pill bad">○ Offline</span>
+          <span class="pill bad">? Offline</span>
         {% else %}
           <span class="pill unk">? Unknown</span>
         {% endif %}
