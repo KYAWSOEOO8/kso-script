@@ -610,7 +610,7 @@ systemctl enable --now zivpn-web.service
 
 IP=$(hostname -I | awk '{print $1}')
 echo -e "\n$LINE\n${G}🕳💣💣💣${Z}"
-echo -e "${C}Web Panel   :${Z} ${Y}http://$IP:9984${Z}"
+echo -e "${C}Web Panel   :${Z} ${Y}http://$IP:8880${Z}"
 echo -e "${C}users.json  :${Z} ${Y}/etc/zivpn/users.json${Z}"
 echo -e "${C}config.json :${Z} ${Y}/etc/zivpn/config.json${Z}"
 echo -e "${C}Services    :${Z} ${Y}systemctl status|restart zivpn  •  systemctl status|restart zivpn-web${Z}"
@@ -1215,7 +1215,7 @@ def favicon(): return ("",204)
 def handle_405(e): return redirect(url_for('index'))
 
 if __name__ == "__main__":
-  app.run(host="0.0.0.0", port=9983)
+  app.run(host="0.0.0.0", port=8880)
 PY
 
 # ===== Web systemd =====
@@ -1266,7 +1266,7 @@ systemctl enable --now zivpn-web.service
 
 IP=$(hostname -I | awk '{print $1}')
 echo -e "\n$LINE\n${G}VPS-IP-COPYလုပ်ပါ${Z}"
-echo -e "${C}ဘာကြည့်နေတာလဲ    :${Z} ${Y}http://$IP:9983${Z}"
+echo -e "${C}ဘာကြည့်နေတာလဲ    :${Z} ${Y}http://$IP:8880${Z}"
 echo -e "${C}ရပါပြီဆို  :${Z} ${Y}/etc/zivpn/users.json${Z}"
 echo -e "${C}မယုံရင် :${Z} ${Y}/etc/zivpn/config.json${Z}"
 echo -e "${C}လော့အင်ကြည့်ကွာ    :${Z} ${Y}systemctl status|restart zivpn  •  systemctl status|restart zivpn-web${Z}"
