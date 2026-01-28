@@ -738,8 +738,8 @@ HTML = """<!doctype html>
 
 {% if not authed %}
   <div class="login-card">
-    <div class="center"><img class="logo" src="{{ logo }}" alt="DEV-U PHOE KAUNT"></div>
-    <h3 class="center">DEV-U PHOE KAUNT</h3>
+    <div class="center"><img class="logo" src="{{ logo }}" alt="KSO-VIP"></div>
+    <h3 class="center">KSO-VIP</h3>
     <p class="center muted" style="margin-top:0">ZIVPN User Panel — Login</p>
     {% if err %}<div class="err">{{err}}</div>{% endif %}
     <form method="post" action="/login">
@@ -758,7 +758,6 @@ HTML = """<!doctype html>
 
   <div>
     <h1 style="margin: 0; font-size: 1.8rem; font-weight: bold; color: var(--fg);">KSO VIP</h1>
-    <div class="sub" style="margin-top: 4px; font-weight: 500;">KSO-ZIVPN-User Panel</div>
   </div>
 
   <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 280px;">
