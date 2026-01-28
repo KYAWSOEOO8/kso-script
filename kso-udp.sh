@@ -216,7 +216,7 @@ HTML = """<!doctype html>
  .bad{color:var(--bad);background:var(--pill-bad)}
  .unk{color:var(--unk);background:var(--pill-unk)}
  .pill{display:inline-block;padding:4px 10px;border-radius:999px}
- form.box{margin:18px auto;padding:24px;border:1px solid var(--bd);border-radius:12px;background:var(--card);max-width:480px;width:100%;text-align:left}
+ form.box{margin:18px auto;padding:24px;border:1px solid var(--bd);border-radius:12px;background:var(--card);max-width:300px;width:100%;text-align:left}
  label{display:block;margin:6px 0 2px}
  input{width:100%;padding:9px 12px;border:1px solid var(--bd);border-radius:10px;box-sizing:border-box}
  .row{display:flex;gap:18px;flex-wrap:wrap;justify-content:center}
@@ -236,7 +236,6 @@ HTML = """<!doctype html>
   <div class="login-card">
     <div class="center"><img class="logo" src="{{ logo }}" alt="KSO-VIP"></div>
     <h3 class="center">KSO-VIP</h3>
-    <p class="center muted" style="margin-top:0">ZIVPN User Panel — Login</p>
     {% if err %}<div class="err">{{err}}</div>{% endif %}
     <form method="post" action="/login">
       <label>Username</label>
