@@ -751,17 +751,14 @@ HTML = """<!doctype html>
     </form>
   </div>
 {% else %}
-
 <header style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 15px; margin-bottom: 25px;">
   <img src="{{ logo }}" alt="KSO VIP" 
        style="height: 85px; width: auto; border-radius: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
-
   <div>
     <h1 style="margin: 0; font-size: 1.8rem; font-weight: bold; color: var(--fg);">KSO VIP</h1>
   </div>
-
   <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 280px;">
-    <a class="btn" href="https://m.me/upkvpnfastvpn" target="_blank" rel="noopener" 
+    <a class="btn" href="https://m.me/kyawsoe.oo.1292019" target="_blank" rel="noopener" 
        style="background: #0084ff; color: white; border: none; padding: 10px; font-weight: bold;">
       💬 Contact (Messenger)
     </a>
