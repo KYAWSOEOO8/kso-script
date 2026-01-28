@@ -749,18 +749,22 @@ HTML = """<!doctype html>
   </div>
 {% else %}
 
-<header>
-  <img src="{{ logo }}" alt="KSO-VIP"
-       style="height:56px;width:auto;display:block;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.15)">
-  <div style="flex:1 1 auto">
-    <h1>KSO-VIP</h1>
-    <div class="sub">ZIVPN User Panel</div>
+<header style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; margin-bottom: 20px;">
+  <img src="{{ logo }}" alt="KSO VIP" 
+       style="height: 80px; width: auto; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+  <div>
+    <h1 style="margin: 0; font-size: 1.8rem; font-weight: bold;">KSO VIP</h1>
+    <div class="sub" style="opacity: 0.9;">KSO-ZIVPN-User Panel</div>
   </div>
-  <div style="display:flex;gap:8px;align-items:center">
-    <a class="btn" href="https://m.me/kyawsoe.oo.1292019" target="_blank" rel="noopener">💬 Contact (Messenger)</a>
+  
+  <div style="display: flex; gap: 10px; margin-top: 10px;">
+    <a class="btn" href="https://m.me/upkvpnfastvpn" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 6px;">
+      Contact (Messenger)
+    </a>
     <a class="btn" href="/logout">Logout</a>
   </div>
 </header>
+
 
 <form method="post" action="/add" class="box">
   <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
