@@ -284,29 +284,21 @@ HTML = """<!doctype html>
 </form>
 
 <table>
-  <tr>
-    <th>👤 User</th><th>🔑 Password</th><th>⏰ Expires</th>
-    <th>🔌 Port</th><th>🔎 Status</th><th>🗑️ Delete</th>
-  </tr>
-  {% for u in users %}
-  <tr class="{% if u.expires and u.expires < today %}expired{% endif %}">
-    <td class="usercell">{{u.user}}</td>
-    <td>{{u.password}}</td>
-    <td>{% if u.expires %}{{u.expires}}{% else %}<span class="muted">—</span>{% endif %}</td>
-    <td>{% if u.port %}{{u.port}}{% else %}<span class="muted">—</span>{% endif %}</td>
-    <td>
-      {% if u.status == "Online" %}<span class="pill ok">Online</span>
-      {% elif u.status == "Offline" %}<span class="pill bad">Offline</span>
-      {% else %}<span class="pill unk">Unknown</span>
-      {% endif %}
-    </td>
-    <td>
-      <form class="delform" method="post" action="/delete" onsubmit="return confirm('ဖျက်မလား?')">
-        <input type="hidden" name="user" value="{{u.user}}">
-        <button type="submit" class="btn" style="border-color:transparent;background:#ffecec">Delete</button>
-      </form>
-    </td>
-  </tr>
+<td>
+  <div style="display:flex; gap:5px; justify-content:flex-end;">
+    <button title="Renew 30 Days" class="btn" onclick="renewUser('{{u.user}}')" style="background:#e8f5e9;">⏳</button>
+    
+    <button title="Pause/Resume" class="btn" onclick="toggleUser('{{u.user}}', '{{u.status}}')" style="background:#fff3e0;">
+      {% if u.password.startswith('PAUSED_') %}▶️{% else %}⏸️{% endif %}
+    </button>
+
+    <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မလား?')" style="margin:0;">
+      <input type="hidden" name="user" value="{{u.user}}">
+      <button type="submit" class="btn" style="background:#ffecec;">🗑️</button>
+    </form>
+  </div>
+</td>
+
   {% endfor %}
 </table>
 
