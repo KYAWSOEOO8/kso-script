@@ -261,20 +261,23 @@ HTML = """<!doctype html>
 
 </header>
 
-<form method="post" action="/add" class="box">
-  <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
-  {% if msg %}<div class="msg">{{msg}}</div>{% endif %}
-  {% if err %}<div class="err">{{err}}</div>{% endif %}
-  <div class="row">
-    <div><label>👤 User</label><input name="user" required></div>
-    <div><label>🔑 Password</label><input name="password" required></div>
-  </div>
-  <div class="row">
-    <div><label>⏰ Expires (ထည့်သွင်းလိုသည့်ရက်)</label><input name="expires" placeholder="2025-12-31 or 30"></div>
-    <div><label>🔌 UDP Port (6000–19999)</label><input name="port" placeholder="auto"></div>
-  </div>
-  <button class="btn" type="submit">Save + Sync</button>
-</form>
+<div style="display: flex; justify-content: center; width: 100%;">
+  <form method="post" action="/add" class="box" style="width: 100%; max-width: 600px; text-align: center;">
+    <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
+    {% if msg %}<div class="msg">{{msg}}</div>{% endif %}
+    {% if err %}<div class="err">{{err}}</div>{% endif %}
+    <div class="row">
+      <div><label>👤 User</label><input name="user" required></div>
+      <div><label>🔑 Password</label><input name="password" required></div>
+    </div>
+    <div class="row">
+      <div><label>⏰ Expires</label><input name="expires" placeholder="2025-12-31 or 30"></div>
+      <div><label>🔌 UDP Port</label><input name="port" placeholder="auto"></div>
+    </div>
+    <button class="btn" type="submit" style="margin-top: 15px; background: #0a8a0a; color: white;">Save + Sync</button>
+  </form>
+</div>
+
 
 <table>
   <tr>
