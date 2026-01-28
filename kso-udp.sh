@@ -241,16 +241,23 @@ HTML = """<!doctype html>
 {% else %}
 
 <header>
-  <img src="{{ logo }}" alt="DEV-U PHOE KAUNT"
+  <img src="{{ logo }}" alt="KSO VIP"
        style="height:56px;width:auto;display:block;border-radius:12px;box-shadow:0 2px 6px rgba(0,0,0,0.15)">
   <div style="flex:1 1 auto">
-    <h1>DEV-U PHOE KAUNT</h1>
-    <div class="sub">ZIVPN User Panel</div>
+    <h1 style="margin:0; font-size: 1.5rem; font-weight: bold;">KSO VIP</h1>
+    <div class="sub" style="opacity: 0.9;">KSO-ZIVPN-User Panel</div>
   </div>
   <div style="display:flex;gap:8px;align-items:center">
-    <a class="btn" href="https://m.me/upkvpnfastvpn" target="_blank" rel="noopener">💬 Contact (Messenger)</a>
+    <a class="btn" href="https://m.me/upkvpnfastvpn" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:8px;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.908 1.462 5.498 3.746 7.152V22l3.43-1.883c.883.244 1.82.378 2.824.378 5.523 0 10-4.145 10-9.258S17.523 2 12 2zm1.06 12.316l-2.583-2.756-5.043 2.756 5.545-5.884 2.66 2.756 4.966-2.756-5.545 5.884z"/>
+      </svg>
+      Contact (Messenger)
+    </a>
     <a class="btn" href="/logout">Logout</a>
   </div>
+</header>
+
 </header>
 
 <form method="post" action="/add" class="box">
