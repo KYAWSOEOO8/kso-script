@@ -292,18 +292,12 @@ HTML = """<!doctype html>
   </tr>
   {% for u in users %}
   <tr class="{% if u.expires and u.expires < today %}expired{% endif %}">
-    <td>
-      <b>{{u.user}}</b><br>
-      <small style="color:#888;">🔑 {{u.password}}</small>
-    </td>
-    <td>
-      {{u.expires if u.expires else '-'}}<br>
-      <small style="color:#888;">Port: {{u.port if u.port else 'auto'}}</small>
-    </td>
+    <td><b>{{u.user}}</b><br><small style="color:#888;">🔑 {{u.password}}</small></td>
+    <td>{{u.expires if u.expires else '-'}}<br><small style="color:#888;">Port: {{u.port if u.port else 'auto'}}</small></td>
     <td>
       {% if u.status == "Online" %}<span class="pill ok">Online</span>
       {% elif u.status == "Offline" %}<span class="pill bad">Offline</span>
-      {% else %}<span class="pill">Unknown</span>{% endif %}
+      {% else %}<span class="pill unk">Unknown</span>{% endif %}
     </td>
     <td>
       <div style="display:flex; gap:5px; justify-content:flex-end;">
@@ -328,6 +322,7 @@ HTML = """<!doctype html>
   </tr>
   {% endfor %}
 </table>
+
 
 
 {% endif %}
