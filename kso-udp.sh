@@ -779,72 +779,108 @@ HTML = """<!doctype html>
 </header>
 
 <form method="post" action="/add" class="box">
-  <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
-  {% if msg %}<div class="msg">{{msg}}</div>{% endif %}
-  {% if err %}<div class="err">{{err}}</div>{% endif %}
+HTML = """<!doctype html>
+<html lang="my"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<style>
+ :root{
+  --bg:#f8fafc; --fg:#0f172a; --muted:#64748b; --card:#ffffff; --bd:#e2e8f0;
+  --primary:#2563eb; --ok:#10b981; --bad:#ef4444; --warn:#f59e0b;
+ }
+ *{box-sizing: border-box; font-family: system-ui, sans-serif;}
+ body{ background:var(--bg); color:var(--fg); margin:0; padding:10px; display:flex; flex-direction:column; align-items:center; }
+ 
+ /* Header Centralized */
+ header{ width:100%; max-width:400px; text-align:center; margin-bottom:15px; }
+ .brand img{ width:55px; height:55px; border-radius:12px; margin-bottom:5px; }
+ .brand h1{ font-size:1.2em; margin:0; font-weight:800; color:var(--primary); text-transform:uppercase; }
+
+ /* Box Input */
+ form.box{ background:var(--card); border:1px solid var(--bd); border-radius:12px; padding:15px; width:100%; max-width:400px; margin-bottom:15px; box-shadow:0 2px 4px rgba(0,0,0,0.05); }
+ .row{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px; }
+ label{ display:block; font-size:10px; color:var(--muted); margin-bottom:3px; font-weight:700; text-align:left; }
+ input{ width:100%; padding:8px; border:1px solid var(--bd); border-radius:6px; font-size:14px; background:#fcfcfc; }
+ .btn-p{ background:var(--primary); color:#fff; border:none; width:100%; padding:10px; border-radius:8px; font-weight:700; cursor:pointer; margin-top:5px; }
+
+ /* Compact Table */
+ .table-container{ width:100%; max-width:400px; }
+ table{ width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--bd); font-size:12px; border-radius:10px; overflow:hidden; }
+ th{ background:#f1f5f9; padding:10px; font-size:10px; color:var(--muted); text-align:center; border-bottom:1px solid var(--bd); }
+ td{ padding:12px 8px; border-bottom:1px solid var(--bd); text-align:center; }
+ 
+ .u-info b{ font-size:13px; display:block; text-align:left; color:#1e293b; }
+ .u-info span{ font-size:10px; color:var(--muted); display:block; text-align:left; }
+
+ .action-group{ display:flex; gap:8px; justify-content:center; align-items:center; }
+ .btn-icon{ background:none; border:none; font-size:16px; cursor:pointer; padding:5px; border-radius:6px; transition:0.2s; }
+ .btn-icon:active{ background:#f1f5f9; }
+ 
+ .status-dot{ width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:4px; }
+</style></head><body>
+
+<header>
+  <div class="brand"><img src="{{ logo }}"><h1>KSO VIP PANEL</h1></div>
+  <a href="/logout" style="font-size:11px; color:var(--bad); text-decoration:none; font-weight:700;">LOGOUT</a>
+</header>
+
+<form method="post" action="/add" class="box">
   <div class="row">
-    <div><label>👤 User</label><input name="user" required></div>
-    <div><label>🔑 Password</label><input name="password" required></div>
+    <div><label>USER</label><input name="user" required></div>
+    <div><label>PASS</label><input name="password" required></div>
   </div>
   <div class="row">
-    <div><label>⏰ Expires (ထည့်သွင်းလိုသည့်ရက်)</label><input name="expires" placeholder="2025-12-31 or 30"></div>
-    <div><label>🔌 UDP Port (6000–19999)</label><input name="port" placeholder="auto"></div>
+    <div><label>DAYS</label><input name="expires" placeholder="30"></div>
+    <div><label>PORT</label><input name="port" placeholder="auto"></div>
   </div>
-  <button class="btn" type="submit">Save + Sync</button>
+  <button class="btn btn-p">SAVE & SYNC USER</button>
 </form>
 
-    <div style="text-align: center;">
-      <button type="submit" style="width: 90%; padding: 8px; border: none; border-radius: 12px; background: #e0e5ec; color: #0a8a0a; font-weight: 400; font-size: 0.85em; cursor: pointer; box-shadow: 3px 3px 6px #bec3c9, -3px -3px 6px #ffffff;">
-        SAVE + SYNC
-      </button>
-    </div>
-
-  </form>
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th style="text-align:left; padding-left:15px;">USER & EXPIRY</th>
+        <th>STATUS</th>
+        <th>MANAGE</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td style="padding-left:15px;">
+          <div class="u-info">
+            <b>{{u.user}}</b>
+            <span>PW: {{u.password}} | <span style="color:var(--primary)">Exp: {{u.expires}}</span></span>
+          </div>
+        </td>
+        <td>
+          {% if u.status == "Online" %}
+            <span style="color:var(--ok); font-weight:bold;">● ON</span>
+          {% else %}
+            <span style="color:var(--muted)">○ OFF</span>
+          {% endif %}
+        </td>
+        <td>
+          <div class="action-group">
+            <form method="post" action="/add" style="margin:0;">
+                <input type="hidden" name="user" value="{{u.user}}">
+                <input type="hidden" name="password" value="{{u.password}}">
+                <input type="hidden" name="expires" value="30">
+                <button type="submit" class="btn-icon" title="Renew" style="color:var(--ok)">⏳</button>
+            </form>
+            <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာလား?')" style="margin:0;">
+                <input type="hidden" name="user" value="{{u.user}}">
+                <button type="submit" class="btn-icon" style="color:var(--bad)">🗑️</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
-    <tr>
-      <th>အသုံးပြုသူ</th>
-      <th>သက်တမ်း/Port</th>
-      <th>အခြေအနေ</th>
-      <th style="text-align:right;">စီမံရန်</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for u in users %}
-    <tr class="user-row {% if u.expires and u.expires < today %}expired{% endif %}">
-      <td>
-        <div style="font-weight:600; color:#1e293b; font-size:15px;">{{u.user}}</div>
-        <div style="font-size:12px; color:#94a3b8;">🔑 {{u.password}}</div>
-      </td>
-      <td>
-        <div style="color:#475569; font-weight:500;">{{u.expires if u.expires else '—'}}</div>
-        <div style="font-size:11px; color:#94a3b8;">Port: <span style="color:#6366f1;">{{u.port if u.port else 'auto'}}</span></div>
-      </td>
-      <td>
-        {% if u.status == "Online" %}
-          <span class="pill ok">● Online</span>
-        {% elif u.status == "Offline" %}
-          <span class="pill bad">? Offline</span>
-        {% else %}
-          <span class="pill unk">? Unknown</span>
-        {% endif %}
-      </td>
-      <td>
-        <div style="display:flex; gap:8px; justify-content:flex-end;">
-          <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာ သေချာပါသလား?')" style="margin:0;">
-            <input type="hidden" name="user" value="{{u.user}}">
-            <button type="submit" class="btn-del">🗑️</button>
-          </form>
-        </div>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-
-
-{% endif %}
 </body></html>"""
+
 
 app = Flask(__name__)
 
