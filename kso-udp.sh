@@ -801,82 +801,170 @@ HTML = """<!doctype html>
 
  /* Compact Table */
  .table-container{ width:100%; max-width:400px; }
- table{ width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--bd); font-size:12px; border-radius:10px; overflow:hidden; }
- th{ background:#f1f5f9; padding:10px; font-size:10px; color:var(--muted); text-align:center; border-bottom:1px solid var(--bd); }
- td{ padding:12px 8px; border-bottom:1px solid var(--bd); text-align:center; }
+HTML = """<!doctype html>
+<html lang="my"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+ :root{
+  --bg:#f0f2f5; --fg:#1e293b; --primary:#2563eb; --ok:#10b981; --warn:#f59e0b; --bad:#ef4444; --card:#ffffff; --bd:#e2e8f0; --muted:#64748b;
+ }
+ *{box-sizing: border-box; font-family: 'Segoe UI', sans-serif; transition: all 0.2s ease;}
+ body{ background:var(--bg); color:var(--fg); margin:0; padding:15px; display:flex; flex-direction:column; align-items:center; min-height:100vh; }
  
- .u-info b{ font-size:13px; display:block; text-align:left; color:#1e293b; }
- .u-info span{ font-size:10px; color:var(--muted); display:block; text-align:left; }
+ /* Header Section */
+ header{ width:100%; max-width:400px; text-align:center; margin-bottom:15px; }
+ .brand img{ width:70px; height:70px; border-radius:22px; border:3px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom:10px; }
+ .brand h1{ font-size:1.5em; margin:0; font-weight:900; color:var(--primary); text-transform:uppercase; letter-spacing:1px; }
 
- .action-group{ display:flex; gap:8px; justify-content:center; align-items:center; }
- .btn-icon{ background:none; border:none; font-size:16px; cursor:pointer; padding:5px; border-radius:6px; transition:0.2s; }
- .btn-icon:active{ background:#f1f5f9; }
+ /* Login UI */
+ .login-card{ margin-top:50px; background:#fff; padding:35px; border-radius:30px; width:100%; max-width:360px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.1); border: 1px solid var(--bd); }
+ .login-card h2{ margin:0 0 25px; font-weight:900; color:var(--fg); font-size: 1.3em; }
+
+ /* Shared Form Elements */
+ .input-grp{ position:relative; margin-bottom: 15px; text-align: left; }
+ .input-grp i{ position:absolute; left:12px; top:38px; color:var(--primary); font-size:14px; }
+ label{ display:block; font-size:11px; color:var(--muted); margin-bottom:5px; font-weight:800; text-transform:uppercase; padding-left: 5px; }
+ input{ width:100%; padding:12px 12px 12px 38px; border:2px solid var(--bd); border-radius:12px; font-size:14px; background:#f8fafc; width: 100%; }
+ input:focus{ border-color:var(--primary); background:#fff; outline:none; box-shadow: 0 0 0 4px var(--primary-light); }
+
+ .btn-primary{ background:var(--primary); color:#fff; border:none; width:100%; padding:15px; border-radius:15px; font-weight:800; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; font-size:14px; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2); }
+
+ /* Dashboard Items */
+ .nav-links{ display:flex; gap:12px; justify-content:center; margin: 10px 0 20px; }
+ .nav-links a{ text-decoration:none; font-size:11px; font-weight:700; padding:10px 18px; border-radius:12px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); color: var(--fg); border: 1px solid var(--bd); }
+
+ form.box{ background:var(--card); border-radius:25px; padding:22px; width:100%; max-width:400px; margin-bottom:20px; box-shadow:0 10px 25px rgba(0,0,0,0.05); }
+ .row{ display:grid; grid-template-columns: 1fr 1fr; gap:15px; }
+
+ /* Receipt Design */
+ #receipt{ position: fixed; left: -9999px; width: 350px; background: #fff; padding: 35px; border-radius: 25px; text-align: center; }
+ .r-title{ color: var(--primary); font-size: 28px; font-weight: 900; border-bottom: 3px dashed var(--bd); padding-bottom: 15px; margin-bottom: 20px; }
+ .r-row{ display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; font-weight: 600; color: #334155; }
+ .r-foot{ margin-top: 20px; padding-top: 15px; border-top: 1px solid #eee; color: var(--ok); font-weight: 800; font-size: 16px; }
+
+ /* User Table */
+ .table-container{ width:100%; max-width:400px; }
+ table{ width:100%; border-collapse:separate; border-spacing: 0 10px; }
+ td{ background:var(--card); padding:15px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); position:relative; overflow:hidden; }
+ td:first-child{ border-radius:18px 0 0 18px; text-align:left; padding-left:20px; }
+ td:last-child{ border-radius:0 18px 18px 0; text-align:center; }
  
- .status-dot{ width:8px; height:8px; border-radius:50%; display:inline-block; margin-right:4px; }
+ .status-bar{ position:absolute; left:0; top:0; bottom:0; width:6px; }
+ .bar-green{ background: var(--ok); } .bar-yellow{ background: var(--warn); } .bar-red{ background: var(--bad); }
+
+ .action-group{ display:flex; gap:10px; justify-content:center; }
+ .act-btn{ width:42px; height:42px; border-radius:12px; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative; font-size: 18px; }
+ .btn-cal{ background:#dbeafe; color:var(--primary); } 
+ .btn-del{ background:#fee2e2; color:var(--bad); }
+ .input-cal{ position:absolute; opacity:0; width:100%; height:100%; cursor:pointer; }
 </style></head><body>
 
-<header>
-  <div class="brand"><img src="{{ logo }}"><h1>KSO VIP PANEL</h1></div>
-  <a href="/logout" style="font-size:11px; color:var(--bad); text-decoration:none; font-weight:700;">LOGOUT</a>
-</header>
-
-<form method="post" action="/add" class="box">
-  <div class="row">
-    <div><label>USER</label><input name="user" required></div>
-    <div><label>PASS</label><input name="password" required></div>
+{% if not authed %}
+  <div class="login-card">
+    <img src="{{ logo }}" style="width:85px; height:85px; border-radius:22px; margin-bottom:15px; border: 3px solid var(--primary-light);">
+    <h2>ADMIN ACCESS</h2>
+    <form method="post" action="/login">
+        <div class="input-grp">
+            <label>Username</label>
+            <i class="fa-solid fa-circle-user"></i>
+            <input name="u" placeholder="Admin Name" required autofocus>
+        </div>
+        <div class="input-grp">
+            <label>Password</label>
+            <i class="fa-solid fa-shield-halved"></i>
+            <input name="p" type="password" placeholder="••••••••" required>
+        </div>
+        <button class="btn-primary" style="margin-top:20px;">
+            SIGN IN <i class="fa-solid fa-arrow-right-to-bracket"></i>
+        </button>
+    </form>
   </div>
-  <div class="row">
-    <div><label>DAYS</label><input name="expires" placeholder="30"></div>
-    <div><label>PORT</label><input name="port" placeholder="auto"></div>
-  </div>
-  <button class="btn btn-p">SAVE & SYNC USER</button>
-</form>
 
-<div class="table-container">
-  <table>
-    <thead>
-      <tr>
-        <th style="text-align:left; padding-left:15px;">USER & EXPIRY</th>
-        <th>STATUS</th>
-        <th>MANAGE</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for u in users %}
-      <tr>
-        <td style="padding-left:15px;">
-          <div class="u-info">
-            <b>{{u.user}}</b>
-            <span>PW: {{u.password}} | <span style="color:var(--primary)">Exp: {{u.expires}}</span></span>
-          </div>
-        </td>
-        <td>
-          {% if u.status == "Online" %}
-            <span style="color:var(--ok); font-weight:bold;">● ON</span>
-          {% else %}
-            <span style="color:var(--muted)">○ OFF</span>
-          {% endif %}
-        </td>
-        <td>
-          <div class="action-group">
-            <form method="post" action="/add" style="margin:0;">
-                <input type="hidden" name="user" value="{{u.user}}">
-                <input type="hidden" name="password" value="{{u.password}}">
-                <input type="hidden" name="expires" value="30">
-                <button type="submit" class="btn-icon" title="Renew" style="color:var(--ok)">⏳</button>
-            </form>
-            <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာလား?')" style="margin:0;">
-                <input type="hidden" name="user" value="{{u.user}}">
-                <button type="submit" class="btn-icon" style="color:var(--bad)">🗑️</button>
-            </form>
-          </div>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-</div>
+{% else %}
+  <header>
+    <div class="brand"><img src="{{ logo }}"><h1>KSO VIP PANEL</h1></div>
+    <div class="nav-links">
+      <a href="https://m.me/kyawsoe.oo.1292019" target="_blank" style="color:#0084ff;"><i class="fa-brands fa-facebook-messenger"></i> SUPPORT</a>
+      <a href="/logout" style="color:var(--bad);"><i class="fa-solid fa-power-off"></i> LOGOUT</a>
+    </div>
+  </header>
+
+  <form method="post" action="/add" id="userForm" class="box">
+    <div class="row">
+      <div class="input-grp"><label>နာမည်</label><i class="fa-solid fa-user-plus"></i><input id="inUser" name="user" required></div>
+      <div class="input-grp"><label>စကားဝှက်</label><i class="fa-solid fa-key"></i><input id="inPass" name="password" required></div>
+    </div>
+    <div class="row">
+      <div class="input-grp"><label>ရက်ပေါင်း</label><i class="fa-solid fa-calendar-day"></i><input id="inDays" name="expires" placeholder="30"></div>
+      <div class="input-grp"><label>UDP PORT</label><i class="fa-solid fa-bolt"></i><input name="port" placeholder="Auto"></div>
+    </div>
+    <button type="button" onclick="handleSave()" class="btn-primary">
+        SAVE & SYNC DATA <i class="fa-solid fa-file-invoice"></i>
+    </button>
+  </form>
+
+  <div id="receipt">
+      <div class="r-title">KSO VIP</div>
+      <div class="r-row"><span>နာမည်:</span> <span id="rUser"></span></div>
+      <div class="r-row"><span>စကားဝှက်:</span> <span id="rPass"></span></div>
+      <div class="r-row"><span>ကုန်ရက်:</span> <span id="rDate"></span></div>
+      <div class="r-foot">ကျေးဇူးတင်ပါသည်</div>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>
+            {% set d = u.days_left | int %}
+            <div class="status-bar {% if d > 10 %}bar-green{% elif d > 3 %}bar-yellow{% else %}bar-red{% endif %}"></div>
+            <strong style="font-size:15px;">{{u.user}}</strong><br>
+            <small style="color:var(--muted); font-weight:600;"><i class="fa-solid fa-clock"></i> {{u.expires}} ({{d}}d left)</small>
+          </td>
+          <td>
+            <div class="action-group">
+              <form method="post" action="/add" style="margin:0;">
+                  <input type="hidden" name="user" value="{{u.user}}"><input type="hidden" name="mode" value="set">
+                  <div class="act-btn btn-cal"><i class="fa-solid fa-calendar-check"></i><input type="date" name="expires" class="input-cal" onchange="this.form.submit()"></div>
+              </form>
+              <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာ သေချာပါသလား?')" style="margin:0;"><input type="hidden" name="user" value="{{u.user}}">
+                  <button type="submit" class="act-btn btn-del"><i class="fa-solid fa-trash-can"></i></button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+  function handleSave() {
+      const user = document.getElementById('inUser').value;
+      const pass = document.getElementById('inPass').value;
+      const days = document.getElementById('inDays').value || "30";
+      if(!user || !pass) { alert("အချက်အလက်ပြည့်စုံစွာဖြည့်ပါ"); return; }
+
+      document.getElementById('rUser').innerText = user;
+      document.getElementById('rPass').innerText = pass;
+      const d = new Date(); d.setDate(d.getDate() + parseInt(days));
+      document.getElementById('rDate').innerText = d.toISOString().split('T')[0];
+
+      html2canvas(document.getElementById('receipt'), {scale: 2}).then(canvas => {
+          const link = document.createElement('a');
+          link.download = 'KSO_VIP_' + user + '.png';
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+          document.getElementById('userForm').submit();
+      });
+  }
+  </script>
+{% endif %}
 </body></html>"""
+
 
 
 app = Flask(__name__)
