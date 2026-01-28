@@ -943,7 +943,10 @@ HTML = """<!doctype html>
             <div class="action-group">
               <form method="post" action="/add" style="margin:0;">
                   <input type="hidden" name="user" value="{{u.user}}"><input type="hidden" name="mode" value="set">
-                  <div class="act-btn btn-cal"><i class="fa-solid fa-calendar-check"></i><input type="date" name="expires" class="input-cal" onchange="this.form.submit()"></div>
+             <div class="act-btn btn-cal"><i class="fa-solid fa-calendar-check"></i>
+    <input type="date" name="expires" class="input-cal" onchange="this.form.submit()">
+</div>
+
               </form>
               <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာ သေချာပါသလား?')" style="margin:0;"><input type="hidden" name="user" value="{{u.user}}">
                   <button type="submit" class="act-btn btn-del"><i class="fa-solid fa-trash-can"></i></button>
