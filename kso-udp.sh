@@ -183,125 +183,121 @@ LOGO_URL = "https://raw.githubusercontent.com/KYAWSOEOO8/kso-script/main/icon.pn
 
 HTML = """<!doctype html>
 <html lang="my"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="refresh" content="120">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
  :root{
-  --bg:#f0f2f5; --fg:#1e293b; --muted:#64748b; --card:#ffffff; --bd:#e2e8f0;
-  --ok:#10b981; --bad:#ef4444; --unk:#94a3b8; --btn:#ffffff; --btnbd:#cbd5e1;
-  --pill-bad:#fee2e2; --pill-ok:#d1fae5; --pill-unk:#f1f5f9;
+  --bg:#f0f2f5; --fg:#1e293b; --primary:#2563eb; --primary-light:#dbeafe;
+  --ok:#10b981; --bad:#ef4444; --card:#ffffff; --bd:#e2e8f0;
  }
- html,body{background:var(--bg); color:var(--fg); min-height: 100vh; margin:0; padding:0;}
- body{
-   font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-   display:flex; flex-direction:column; align-items:center; 
-   padding: 12px; box-sizing: border-box;
- }
- header{display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:20px; text-align:center; width:100%;}
- h1{margin:0; font-size:1.6em; font-weight:700; color:#1e40af;}
+ *{box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; transition: all 0.2s ease;}
+ body{ background:var(--bg); color:var(--fg); margin:0; padding:15px; display:flex; flex-direction:column; align-items:center; }
  
- .btn{
-   padding:10px 16px; border-radius:12px; border:1px solid var(--btnbd);
-   background:var(--btn); color:var(--fg); text-decoration:none; cursor:pointer;
-   display: inline-block; font-weight: 500; font-size: 14px; transition: 0.2s;
- }
- 
- /* Form Box */
- form.box{
-   margin:10px auto; padding:20px; border-radius:16px; 
-   background:var(--card); max-width:500px; width:100%; 
-   box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); box-sizing: border-box;
- }
- h3{margin-top:0; font-size:1.1em; color:#334155; border-bottom: 1px solid var(--bd); padding-bottom:10px;}
- label{display:block; margin:12px 0 4px; font-weight: 600; font-size: 13px; color:var(--muted);}
- input{
-   width:100%; padding:11px; border:1px solid var(--bd); border-radius:8px; 
-   box-sizing:border-box; background:#f8fafc; font-size: 15px;
- }
- .row{display:flex; gap:12px; flex-wrap:wrap;}
- .row>div{flex:1 1 180px;}
+ /* Header & Logo Centralized */
+ header{ width:100%; max-width:400px; text-align:center; margin-bottom:20px; display:flex; flex-direction:column; align-items:center; }
+ .brand img{ width:65px; height:65px; border-radius:20px; border:3px solid #fff; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom:10px; }
+ .brand h1{ font-size:1.4em; margin:0; font-weight:900; color:var(--primary); text-transform:uppercase; letter-spacing:1px; }
+
+ /* Navigation Links - Center Aligned */
+ .nav-links{ display:flex; gap:20px; justify-content:center; align-items:center; margin-top:15px; width:100%; }
+ .nav-links a{ text-decoration:none; font-size:12px; font-weight:700; display:flex; align-items:center; gap:6px; padding:5px 10px; border-radius:8px; background: #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+ /* Form & Input Styling */
+ form.box{ background:var(--card); border-radius:20px; padding:20px; width:100%; max-width:400px; margin-bottom:20px; box-shadow:0 10px 25px rgba(0,0,0,0.05); }
+ .box-h{ font-size:14px; color:var(--primary); font-weight:800; margin-bottom:15px; display:flex; align-items:center; gap:8px; text-transform:uppercase; justify-content:center; }
+ .row{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:15px; }
+ .input-grp{ position:relative; }
+ .input-grp i{ position:absolute; left:12px; top:35px; color:var(--primary); font-size:13px; }
+ label{ display:block; font-size:11px; color:var(--muted); margin-bottom:5px; font-weight:700; opacity:0.8; }
+ input{ width:100%; padding:10px 10px 10px 35px; border:2px solid var(--bd); border-radius:10px; font-size:14px; background:#f8fafc; }
+ input:focus{ border-color:var(--primary); background:#fff; outline:none; }
+
+ .btn-save{ background:var(--primary); color:#fff; border:none; width:100%; padding:14px; border-radius:12px; font-weight:800; cursor:pointer; font-size:14px; display:flex; align-items:center; justify-content:center; gap:10px; }
 
  /* Table Styling */
- .table-container { width:100%; max-width:600px; overflow-x:auto; margin-top:20px; }
- table{ border-collapse:collapse; width:100%; background:var(--card); border-radius:12px; overflow:hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);}
- th{ background:#f8fafc; padding:12px 8px; font-size:13px; color:var(--muted); text-transform:uppercase; border-bottom:2px solid var(--bd);}
- td{ padding:14px 8px; text-align:center; border-bottom:1px solid var(--bd); font-size:14px;}
+ .table-container{ width:100%; max-width:400px; }
+ table{ width:100%; border-collapse:separate; border-spacing: 0 8px; }
+ td{ background:var(--card); padding:15px 10px; text-align:center; font-size:13px; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }
+ td:first-child{ border-radius:15px 0 0 15px; text-align:left; padding-left:18px; }
+ td:last-child{ border-radius:0 15px 15px 0; }
  
- .pill{ display:inline-block; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:600; }
- .ok{ color:var(--ok); background:var(--pill-ok); }
- .bad{ color:var(--bad); background:var(--pill-bad); }
- .unk{ color:var(--unk); background:var(--pill-unk); }
+ .u-name{ font-size:15px; font-weight:800; color:#0f172a; display:block; }
+ .u-exp{ font-size:11px; color:var(--primary); font-weight:600; margin-top:3px; display:flex; align-items:center; gap:4px; }
 
- .msg{ background:#d1fae5; color:#065f46; padding:10px; border-radius:8px; margin-bottom:15px; text-align:center; font-size:14px; }
- .err{ background:#fee2e2; color:#991b1b; padding:10px; border-radius:8px; margin-bottom:15px; text-align:center; font-size:14px; }
+ .action-group{ display:flex; gap:10px; justify-content:center; }
+ .act-btn{ width:38px; height:38px; border-radius:10px; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; }
+ .btn-ren{ background:#d1fae5; color:#059669; }
+ .btn-del{ background:#fee2e2; color:#dc2626; }
 
- .login-card{ max-width:380px; width:95%; margin-top:50px; padding:30px; border-radius:20px; background:var(--card); box-shadow: 0 10px 25px rgba(0,0,0,0.1); box-sizing: border-box;}
- .logo{ height:70px; width:70px; border-radius:18px; margin-bottom:10px; }
+ .status-badge{ font-size:10px; font-weight:900; padding:4px 8px; border-radius:8px; text-transform:uppercase; }
+ .on{ background:#d1fae5; color:#059669; }
+ .off{ background:#f1f5f9; color:#94a3b8; }
 </style></head><body>
 
 {% if not authed %}
-  <div class="login-card" style="text-align:center;">
-    <img class="logo" src="{{ logo }}" alt="KSO-VIP">
-    <h3>KSO-VIP Login</h3>
-    {% if err %}<div class="err">{{err}}</div>{% endif %}
+  <div style="margin-top:50px; background:#fff; padding:35px; border-radius:25px; width:100%; max-width:340px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.1);">
+    <img src="{{ logo }}" style="width:80px; height:80px; border-radius:22px; margin-bottom:15px;">
+    <h2 style="margin:0 0 25px; font-weight:900; color:var(--fg);">WELCOME BACK</h2>
     <form method="post" action="/login" style="text-align:left;">
-      <label>Username</label>
-      <input name="u" autofocus required>
-      <label>Password</label>
-      <input name="p" type="password" required>
-      <button class="btn" type="submit" style="margin-top:25px; width:100%; background:#1e40af; color:#fff; border:none;">အကောင့်ဝင်ရန်</button>
+        <label>USERNAME</label>
+        <div class="input-grp"><i class="fa-solid fa-circle-user"></i><input name="u" required autofocus></div>
+        <br>
+        <label>PASSWORD</label>
+        <div class="input-grp"><i class="fa-solid fa-shield-halved"></i><input name="p" type="password" required></div>
+        <button class="btn-save" style="margin-top:25px;">SIGN IN <i class="fa-solid fa-arrow-right-to-bracket"></i></button>
     </form>
   </div>
 {% else %}
 <header>
-  <img src="{{ logo }}" alt="KSO-VIP" style="width: 70px; height: 70px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
-  <h1>KSO VIP PANEL</h1>
-  <div style="display:flex; gap:10px; margin-top:5px;">
-    <a class="btn" href="https://m.me/kyawsoe.oo.1292019" target="_blank" style="background:#0084ff; color:#fff; border:none;">💬 Contact</a>
-    <a class="btn" href="/logout" style="color:#ef4444;">Logout</a>
+  <div class="brand"><img src="{{ logo }}"><h1>KSO VIP PANEL</h1></div>
+  <div class="nav-links">
+    <a href="https://m.me/kyawsoe.oo.1292019" target="_blank" style="color:#0084ff;"><i class="fa-brands fa-facebook-messenger"></i> SUPPORT</a>
+    <a href="/logout" style="color:var(--bad);"><i class="fa-solid fa-power-off"></i> LOGOUT</a>
   </div>
 </header>
 
 <form method="post" action="/add" class="box">
-  <h3>➕ အသုံးပြုသူအသစ်ထည့်ရန်</h3>
-  {% if msg %}<div class="msg">✅ {{msg}}</div>{% endif %}
-  {% if err %}<div class="err">⚠️ {{err}}</div>{% endif %}
+  <div class="box-h"><i class="fa-solid fa-folder-plus"></i> Create New User</div>
   <div class="row">
-    <div><label>👤 Username</label><input name="user" placeholder="Name" required></div>
-    <div><label>🔑 Password</label><input name="password" placeholder="Pass" required></div>
+    <div class="input-grp"><label>USERNAME</label><i class="fa-solid fa-user-tag"></i><input name="user" required></div>
+    <div class="input-grp"><label>PASSWORD</label><i class="fa-solid fa-unlock-keyhole"></i><input name="password" required></div>
   </div>
   <div class="row">
-    <div><label>⏰ Expires (ရက်အရေအတွက်)</label><input name="expires" placeholder="ဥပမာ- 30"></div>
-    <div><label>🔌 UDP Port</label><input name="port" placeholder="auto (6000-19999)"></div>
+    <div class="input-grp"><label>DURATION</label><i class="fa-solid fa-hourglass-start"></i><input name="expires" placeholder="30 Days"></div>
+    <div class="input-grp"><label>UDP PORT</label><i class="fa-solid fa-bolt-lightning"></i><input name="port" placeholder="Auto"></div>
   </div>
-  <button class="btn" type="submit" style="margin-top:20px; width:100%; background:#059669; color:#fff; border:none; font-size:16px;">SAVE + SYNC</button>
+  <button class="btn-save">SAVE & SYNC DATA <i class="fa-solid fa-cloud-arrow-up"></i></button>
 </form>
 
 <div class="table-container">
   <table>
-    <thead>
-      <tr>
-        <th>User/Pass</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
     <tbody>
       {% for u in users %}
-      <tr {% if u.expires and u.expires < today %}style="background:#fff1f2;"{% endif %}>
-        <td style="text-align:left; padding-left:15px;">
-          <div style="font-weight:700;">{{u.user}}</div>
-          <div style="font-size:11px; color:var(--muted);">PW: {{u.password}} | Exp: {{u.expires if u.expires else '—'}}</div>
+      <tr>
+        <td>
+          <span class="u-name">{{u.user}}</span>
+          <span class="u-exp"><i class="fa-solid fa-calendar-check"></i> Exp: {{u.expires}}</span>
         </td>
         <td>
-          {% if u.status == "Online" %}<span class="pill ok">Online</span>
-          {% else %}<span class="pill unk">Offline</span>{% endif %}
+          {% if u.status == "Online" %}
+            <span class="status-badge on">Online</span>
+          {% else %}
+            <span class="status-badge off">Offline</span>
+          {% endif %}
         </td>
         <td>
-          <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာ သေချာပါသလား?')" style="margin:0;">
-            <input type="hidden" name="user" value="{{u.user}}">
-            <button type="submit" style="background:none; border:none; cursor:pointer; font-size:18px;">🗑️</button>
-          </form>
+          <div class="action-group">
+            <form method="post" action="/add" style="margin:0;">
+                <input type="hidden" name="user" value="{{u.user}}">
+                <input type="hidden" name="password" value="{{u.password}}">
+                <input type="hidden" name="expires" value="30">
+                <button type="submit" class="act-btn btn-ren" title="Add 30 Days"><i class="fa-solid fa-plus"></i></button>
+            </form>
+            <form method="post" action="/delete" onsubmit="return confirm('Delete this user?')" style="margin:0;">
+                <input type="hidden" name="user" value="{{u.user}}">
+                <button type="submit" class="act-btn btn-del"><i class="fa-solid fa-trash"></i></button>
+            </form>
+          </div>
         </td>
       </tr>
       {% endfor %}
@@ -310,6 +306,7 @@ HTML = """<!doctype html>
 </div>
 {% endif %}
 </body></html>"""
+
 
 
 app = Flask(__name__)
