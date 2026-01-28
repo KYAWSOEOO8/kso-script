@@ -768,21 +768,30 @@ HTML = """<!doctype html>
   </div>
   <div>
     <h1>KSO VIP</h1>
-    <p class="sub">KSO-ZIVPN-User Panel</p>
   </div>
   <div style="width: 100%; max-width: 280px;">
     <a class="btn" href="https://m.me/kyawsoe.oo.1292019" target="_blank" rel="noopener" 
        style="display: block; background: #0084ff; color: white; border: none; padding: 12px; font-weight: bold; text-decoration: none; border-radius: 8px;">
       💬 Contact (Messenger)
     </a>
+    <a class="btn" href="/logout">Logout</a>
   </div>
 </header>
 
 <form method="post" action="/add" class="box">
   <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
   
-  {% if msg %}<div class="msg" style="background: #e6fffa; color: #234e52; border: 1px solid #b2f5ea;">{{msg}}</div>{% endif %}
-  {% if err %}<div class="err" style="background: #fff5f5; color: #742a2a; border: 1px solid #fed7d7;">{{err}}</div>{% endif %}
+  {% if msg %}
+  <div class="msg" style="background: #e6fffa; color: #234e52; border: 1px solid #b2f5ea; padding: 12px 20px; border-radius: 12px; text-align: center; max-width: 300px; width: 100%; margin: 10px auto; box-sizing: border-box;">
+    {{msg}}
+  </div>
+{% endif %}
+
+{% if err %}
+  <div class="err" style="background: #fff5f5; color: #742a2a; border: 1px solid #fed7d7; padding: 12px 20px; border-radius: 12px; text-align: center; max-width: 300px; width: 100%; margin: 10px auto; box-sizing: border-box;">
+    {{err}}
+  </div>
+{% endif %}
 
   <div class="input-group">
     <label><span class="icon">👤</span> Username</label>
