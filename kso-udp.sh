@@ -752,76 +752,94 @@ HTML = """<!doctype html>
   </div>
 {% else %}
 
-<header style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; margin-bottom: 20px;">
+<header style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 15px; margin-bottom: 25px;">
   <img src="{{ logo }}" alt="KSO VIP" 
-       style="height: 80px; width: auto; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+       style="height: 85px; width: auto; border-radius: 18px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+
   <div>
-    <h1 style="margin: 0; font-size: 1.8rem; font-weight: bold;">KSO VIP</h1>
-    <div class="sub" style="opacity: 0.9;">KSO-ZIVPN-User Panel</div>
+    <h1 style="margin: 0; font-size: 1.8rem; font-weight: bold; color: var(--fg);">KSO VIP</h1>
+    <div class="sub" style="margin-top: 4px; font-weight: 500;">KSO-ZIVPN-User Panel</div>
   </div>
-  
-  <div style="display: flex; gap: 10px; margin-top: 10px;">
-    <a class="btn" href="https://m.me/upkvpnfastvpn" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 6px;">
-      Contact (Messenger)
+
+  <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 280px;">
+    <a class="btn" href="https://m.me/upkvpnfastvpn" target="_blank" rel="noopener" 
+       style="background: #0084ff; color: white; border: none; padding: 10px; font-weight: bold;">
+      💬 Contact (Messenger)
     </a>
-    <a class="btn" href="/logout">Logout</a>
+    <a class="btn" href="/logout" 
+       style="background: #f1f1f1; border: 1px solid #ddd; padding: 10px;">
+      🚪 Logout
+    </a>
   </div>
 </header>
 
 
+
 <form method="post" action="/add" class="box">
   <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
-  {% if msg %}<div class="msg">{{msg}}</div>{% endif %}
-  {% if err %}<div class="err">{{err}}</div>{% endif %}
-  <div class="row">
-    <div><label>👤 User</label><input name="user" required></div>
-    <div><label>🔑 Password</label><input name="password" required></div>
-  </div>  
-    <div class="row">
-    <div>
-      <label>⏰ Expires (ပြက္ခဒိန် သို့မဟုတ် ခလုတ်သုံးပါ)</label>
-      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-          <input type="date" name="expires" id="exp_input" style="flex: 1 1 150px;">
-          
-      </div>
-    </div>
-    <div><label>🔌 UDP Port (6000–19999)</label><input name="port" placeholder="auto"></div>
+  
+  {% if msg %}<div class="msg" style="background: #e6fffa; color: #234e52; border: 1px solid #b2f5ea;">{{msg}}</div>{% endif %}
+  {% if err %}<div class="err" style="background: #fff5f5; color: #742a2a; border: 1px solid #fed7d7;">{{err}}</div>{% endif %}
+
+  <div class="input-group">
+    <label><span class="icon">👤</span> Username</label>
+    <input name="user" required placeholder="ဥပမာ - mgmg123">
   </div>
+  
+  <div class="input-group">
+    <label><span class="icon">🔑</span> Password</label>
+    <input type="password" name="password" required placeholder="လျှို့ဝှက်နံပါတ်">
   </div>
-  <button class="btn" type="submit">Save + Sync</button>
+
+  <div class="input-group">
+    <label><span class="icon">📅</span> Expiration Date</label>
+    <input type="date" name="expires" id="exp_input">
+  </div>
+
+  <div class="input-group">
+    <label><span class="icon">🚀</span> UDP Port</label>
+    <input type="number" name="port" placeholder="auto (6000-19999)">
+  </div>
+
+  <button class="btn" type="submit">Save & Sync System</button>
 </form>
 
+
+<table>
 <table>
   <thead>
     <tr>
       <th>အသုံးပြုသူ</th>
       <th>သက်တမ်း/Port</th>
-      <th>Status</th>
+      <th>အခြေအနေ</th>
       <th style="text-align:right;">စီမံရန်</th>
     </tr>
   </thead>
   <tbody>
     {% for u in users %}
-    <tr class="{% if u.expires and u.expires < today %}expired{% endif %}">
+    <tr class="user-row {% if u.expires and u.expires < today %}expired{% endif %}">
       <td>
-        <div style="font-weight:700;">{{u.user}}</div>
-        <div style="font-size:11px; color:#888;">🔑 {{u.password}}</div>
+        <div style="font-weight:600; color:#1e293b; font-size:15px;">{{u.user}}</div>
+        <div style="font-size:12px; color:#94a3b8;">🔑 {{u.password}}</div>
       </td>
       <td>
-        <div>{{u.expires if u.expires else '—'}}</div>
-        <div style="font-size:11px; color:#999;">Port: {{u.port if u.port else 'auto'}}</div>
+        <div style="color:#475569; font-weight:500;">{{u.expires if u.expires else '—'}}</div>
+        <div style="font-size:11px; color:#94a3b8;">Port: <span style="color:#6366f1;">{{u.port if u.port else 'auto'}}</span></div>
       </td>
       <td>
-        {% if u.status == "Online" %}<span class="pill ok">● Online</span>
-        {% elif u.status == "Offline" %}<span class="pill bad">○ Offline</span>
-        {% else %}<span class="pill unk">? Unknown</span>{% endif %}
+        {% if u.status == "Online" %}
+          <span class="pill ok">● Online</span>
+        {% elif u.status == "Offline" %}
+          <span class="pill bad">○ Offline</span>
+        {% else %}
+          <span class="pill unk">? Unknown</span>
+        {% endif %}
       </td>
       <td>
-        <div style="display:flex; gap:5px; justify-content:flex-end;">
-
-          <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာလား?')" style="margin:0;">
+        <div style="display:flex; gap:8px; justify-content:flex-end;">
+          <form method="post" action="/delete" onsubmit="return confirm('ဖျက်မှာ သေချာပါသလား?')" style="margin:0;">
             <input type="hidden" name="user" value="{{u.user}}">
-            <button type="submit" class="i-btn">🗑️</button>
+            <button type="submit" class="btn-del">🗑️</button>
           </form>
         </div>
       </td>
@@ -829,6 +847,7 @@ HTML = """<!doctype html>
     {% endfor %}
   </tbody>
 </table>
+
 
 
 {% endif %}
