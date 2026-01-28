@@ -597,7 +597,7 @@ iptables -t nat -A POSTROUTING -o "$IFACE" -j MASQUERADE
 
 ufw allow 5667/udp >/dev/null 2>&1 || true
 ufw allow 6000:19999/udp >/dev/null 2>&1 || true
-ufw allow 8080/tcp >/dev/null 2>&1 || true
+ufw allow 8880/tcp >/dev/null 2>&1 || true
 ufw reload >/dev/null 2>&1 || true
 
 # ===== CRLF sanitize =====
