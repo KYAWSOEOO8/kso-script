@@ -15,7 +15,7 @@ B="\e[1;34m"; G="\e[1;32m"; Y="\e[1;33m"; R="\e[1;31m"; C="\e[1;36m"; M="\e[1;35
 LINE="${B}────────────────────────────────────────────────────────${Z}"
 say(){ echo -e "$1"; }
 
-echo -e "\n$LINE\n${G}🌟 ZIVPN UDP Server + Web UI ကို  KSO မှ ရေးသားထားသည်${Z}\n$LINE"
+echo -e "\n$LINE\n${G}🌟 ZIVPN UDP-KSO မှ ရေးသားထားသည်${Z}\n$LINE"
 
 # ===== Root check =====
 if [ "$(id -u)" -ne 0 ]; then
@@ -121,7 +121,7 @@ else
 fi
 
 # ===== Ask initial VPN passwords =====
-say "${G}🔏 VPN Password List (ကော်မာဖြင့်ခွဲ) eg: upkvip,alice,pass1${Z}"
+say "${G}စောင့်နေရတာ{Z}"
 read -r -p "Passwords (Enter=zi): " input_pw
 if [ -ဇ "${input_pw:-}" ]; then PW_LIST='["zi"]'; else
   PW_LIST=$(echo "$input_pw" | awk -F',' '{
@@ -145,7 +145,7 @@ fi
 chmod 644 "$CFG" "$USERS"
 
 # ===== systemd: ZIVPN =====
-say "${Y}🧰 systemd service (zivpn) ကို သွင်းနေပါတယ်...${Z}"
+say "${Y}အစRunပြီး..${Z}"
 cat >/etc/systemd/system/zivpn.service <<'EOF'
 [Unit]
 Description=ZIVPN UDP Server
@@ -168,7 +168,7 @@ WantedBy=multi-user.target
 EOF
 
 # ===== Web Panel (Flask 1.x compatible, refresh 120s + Login UI) =====
-say "${Y}🖥️ Web Panel (Flask) ကို ထည့်နေပါတယ်...${Z}"
+say "${Y}ဖိုင်း ကို ထည့်နေပါတယ်...${Z}"
 cat >/etc/zivpn/web.py <<'PY'
 from flask import Flask, jsonify, render_template_string, request, redirect, url_for, session, make_response
 import json, re, subprocess, os, tempfile, hmac
@@ -582,7 +582,7 @@ WantedBy=multi-user.target
 EOF
 
 # ===== Networking: forwarding + DNAT + MASQ + UFW =====
-echo -e "${Y}🌐 UDP/DNAT + UFW + sysctl အပြည့်ချထားနေပါတယ်...${Z}"
+echo -e "${Y}စောင့်ပိုတွေ...${Z}"
 sysctl -w net.ipv4.ip_forward=1 >/dev/null
 grep -q '^net.ipv4.ip_forward=1' /etc/sysctl.conf || echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
 
@@ -609,12 +609,12 @@ systemctl enable --now zivpn.service
 systemctl enable --now zivpn-web.service
 
 IP=$(hostname -I | awk '{print $1}')
-echo -e "\n$LINE\n${G}✅ Done${Z}"
-echo -e "${C}Web Panel   :${Z} ${Y}http://$IP:8080${Z}"
+echo -e "\n$LINE\n${G}🕳💣💣💣${Z}"
+echo -e "${C}Web Panel   :${Z} ${Y}http://$IP:9984${Z}"
 echo -e "${C}users.json  :${Z} ${Y}/etc/zivpn/users.json${Z}"
 echo -e "${C}config.json :${Z} ${Y}/etc/zivpn/config.json${Z}"
 echo -e "${C}Services    :${Z} ${Y}systemctl status|restart zivpn  •  systemctl status|restart zivpn-web${Z}"
-echo -ે "$LINE"  say "${Y}🔐 SSL စိတျဖိုင်တွေ ဖန်တီးနေပါတယ်...${Z}"
+echo -ે "$LINE"  say "${Y}အသုံးပြုနိုင်ပြီး မသာလေး...${Z}"
   openssl req -new -newkey rsa:4096 -days 365 -nodes -x509 \
     -subj "/C=MM/ST=Yangon/L=Yangon/O=UPK/OU=Net/CN=zivpn" \
     -keyout "/etc/zivpn/zivpn.key" -out "/etc/zivpn/zivpn.crt" >/dev/null 2>&1
@@ -644,7 +644,7 @@ else
 fi
 
 # ===== Ask initial VPN passwords =====
-say "${G}🔏 VPN Password List (ကော်မာဖြင့်ခွဲ) eg: upkvip,alice,pass1${Z}"
+say "${G}🔏 KSO-VIP{Z}"
 read -r -p "Passwords (Enter=zi): " input_pw
 if [ -z "${input_pw:-}" ]; then PW_LIST='["zi"]'; else
   PW_LIST=$(echo "$input_pw" | awk -F',' '{
@@ -668,7 +668,7 @@ fi
 chmod 644 "$CFG" "$USERS"
 
 # ===== systemd: ZIVPN =====
-say "${Y}🧰 systemd service (zivpn) ကို သွင်းနေပါတယ်...${Z}"
+say "${Y}🖕🏻🖕🏻🖕🏻 ခဏစောင့်ဦးဘဲကြီး(zivpn) ကို သွင်းနေပါတယ်...${Z}"
 cat >/etc/systemd/system/zivpn.service <<'EOF'
 [Unit]
 Description=ZIVPN UDP Server
@@ -691,7 +691,7 @@ WantedBy=multi-user.target
 EOF
 
 # ===== Web Panel (Flask 1.x compatible, refresh 120s + Login UI) =====
-say "${Y}🖥️ Web Panel (Flask) ကို ထည့်နေပါတယ်...${Z}"
+say "${Y}🤡🤡🤡 ရတော့မယ်...${Z}"
 cat >/etc/zivpn/web.py <<'PY'
 from flask import Flask, jsonify, render_template_string, request, redirect, url_for, session, make_response
 import json, re, subprocess, os, tempfile, hmac
@@ -1238,7 +1238,7 @@ WantedBy=multi-user.target
 EOF
 
 # ===== Networking: forwarding + DNAT + MASQ + UFW =====
-echo -e "${Y}🌐 UDP/DNAT + UFW + sysctl အပြည့်ချထားနေပါတယ်...${Z}"
+echo -e "${Y}😁ရပါပြီနော်..ကိုကို😘😘😘...${Z}"
 sysctl -w net.ipv4.ip_forward=1 >/dev/null
 grep -q '^net.ipv4.ip_forward=1' /etc/sysctl.conf || echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
 
@@ -1265,9 +1265,9 @@ systemctl enable --now zivpn.service
 systemctl enable --now zivpn-web.service
 
 IP=$(hostname -I | awk '{print $1}')
-echo -e "\n$LINE\n${G}✅ Done${Z}"
-echo -e "${C}Web Panel   :${Z} ${Y}http://$IP:9983${Z}"
-echo -e "${C}users.json  :${Z} ${Y}/etc/zivpn/users.json${Z}"
-echo -e "${C}config.json :${Z} ${Y}/etc/zivpn/config.json${Z}"
-echo -e "${C}Services    :${Z} ${Y}systemctl status|restart zivpn  •  systemctl status|restart zivpn-web${Z}"
+echo -e "\n$LINE\n${G}VPS-IP-COPYလုပ်ပါ${Z}"
+echo -e "${C}ဘာကြည့်နေတာလဲ    :${Z} ${Y}http://$IP:9983${Z}"
+echo -e "${C}ရပါပြီဆို  :${Z} ${Y}/etc/zivpn/users.json${Z}"
+echo -e "${C}မယုံရင် :${Z} ${Y}/etc/zivpn/config.json${Z}"
+echo -e "${C}လော့အင်ကြည့်ကွာ    :${Z} ${Y}systemctl status|restart zivpn  •  systemctl status|restart zivpn-web${Z}"
 echo -e "$LINE"
