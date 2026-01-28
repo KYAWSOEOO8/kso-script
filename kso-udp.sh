@@ -772,7 +772,6 @@ HTML = """<!doctype html>
   <div class="login-card">
     <div class="center"><img class="logo" src="{{ logo }}" alt="KSO-VIP"></div>
     <h3 class="center">KSO-VIP</h3>
-    <p class="center muted" style="margin-top:0">ZIVPN User Panel — Login</p>
     {% if err %}<div class="err">{{err}}</div>{% endif %}
     <form method="post" action="/login">
       <label>Username</label>
@@ -803,13 +802,13 @@ HTML = """<!doctype html>
   <h3>➕ အသုံးပြုသူ အသစ်ထည့်ရန်</h3>
   
   {% if msg %}
-  <div class="msg" style="background: #e6fffa; color: #234e52; border: 1px solid #b2f5ea; padding: 12px 20px; border-radius: 12px; text-align: center; max-width: 300px; width: 100%; margin: 10px auto; box-sizing: border-box;">
+  <div class="msg" style="background: #e6fffa; color: #234e52; border: 1px solid #b2f5ea; padding: 12px 20px; border-radius: 12px; text-align: center; max-width: 90px; width: 100%; margin: 10px auto; box-sizing: border-box;">
     {{msg}}
   </div>
 {% endif %}
 
 {% if err %}
-  <div class="err" style="background: #fff5f5; color: #742a2a; border: 1px solid #fed7d7; padding: 12px 20px; border-radius: 12px; text-align: center; max-width: 300px; width: 100%; margin: 10px auto; box-sizing: border-box;">
+  <div class="err" style="background: #fff5f5; color: #742a2a; border: 1px solid #fed7d7; padding: 12px 20px; border-radius: 12px; text-align: center; max-width: 90px; width: 100%; margin: 10px auto; box-sizing: border-box;">
     {{err}}
   </div>
 {% endif %}
