@@ -761,10 +761,18 @@ HTML = """<!doctype html>
   <div class="row">
     <div><label>👤 User</label><input name="user" required></div>
     <div><label>🔑 Password</label><input name="password" required></div>
-  </div>
-  <div class="row">
-    <div><label>⏰ Expires (ထည့်သွင်းလိုသည့်ရက်)</label><input name="expires" placeholder="2025-12-31 or 30"></div>
+  </div>  
+    <div class="row">
+    <div>
+      <label>⏰ Expires (ပြက္ခဒိန် သို့မဟုတ် ခလုတ်သုံးပါ)</label>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <input type="date" name="expires" id="exp_input" style="flex: 1 1 150px;">
+          <button type="button" class="btn" onclick="setDays(30)" style="background:#e3f2fd; border-color:#2196f3; color:#000;">၁ လစာ</button>
+          <button type="button" class="btn" onclick="setDays(60)" style="background:#e3f2fd; border-color:#2196f3; color:#000;">၂ လစာ</button>
+      </div>
+    </div>
     <div><label>🔌 UDP Port (6000–19999)</label><input name="port" placeholder="auto"></div>
+  </div>
   </div>
   <button class="btn" type="submit">Save + Sync</button>
 </form>
