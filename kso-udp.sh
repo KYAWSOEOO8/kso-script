@@ -344,10 +344,6 @@ HTML = """<!doctype html>
   </script>
 {% endif %}
 </body></html>"""
-
-
-
-
 app = Flask(__name__)
 
 # Secret & Admin credentials (via env)
